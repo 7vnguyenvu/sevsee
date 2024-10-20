@@ -5,14 +5,14 @@ import { useGlobalContext } from "@/context/store";
 interface Props {
     url: string;
     children: React.ReactNode;
-    sx?: any;
+    sx?: React.CSSProperties;
 }
 
-const LinkTo = ({ url, sx, children, ...props }: Props) => {
+const LinkTo = ({ url, sx, children }: Props) => {
     const { handleClickLinkTo } = useGlobalContext();
 
     return (
-        <Link onClick={() => handleClickLinkTo(url)} href={`/${url}`} style={{ textDecoration: "none", ...sx }} {...props}>
+        <Link onClick={() => handleClickLinkTo(url)} href={`/${url}`} style={{ textDecoration: "none", ...sx }}>
             {children}
         </Link>
     );

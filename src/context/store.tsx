@@ -24,23 +24,23 @@ interface ContextProps {
     setPageSave: Dispatch<SetStateAction<PageSave>>;
     token: string | null;
     setToken: Dispatch<SetStateAction<string | null>>;
-    handleClickLinkTo: Function;
+    handleClickLinkTo: (url: string) => void;
 }
 
 const GlobalContext = createContext<ContextProps>({
     isMobile: false,
     systemMode: "dark",
     lang: "vi",
-    setLang: (): any => {},
+    setLang: (): void => {},
     pageSave: {} as PageSave,
-    setPageSave: (): any => {},
+    setPageSave: (): void => {},
     token: null,
-    setToken: (): any => {},
-    handleClickLinkTo: (): any => {},
+    setToken: (): void => {},
+    handleClickLinkTo: (): void => {},
 });
 
 export function GlobalContextProvider({ children }: { children: React.ReactNode }) {
-    let countReRender = 0;
+    // let countReRender = 0;
     const pathname = usePathname();
     const systemMode = useSystemColorMode();
     const storedToken = typeof localStorage !== "undefined" ? localStorage.getItem("access-token") : null;
@@ -73,10 +73,10 @@ export function GlobalContextProvider({ children }: { children: React.ReactNode 
     const isMobile = useMediaQuery("(max-width:600px)");
 
     // DÒNG LOG CHECK -> XÓA SAU
-    useEffect(() => {
-        console.log("[Store] Render lần:", ++countReRender);
-        console.log("Page-save:", pageSave);
-    }, [pageSave]);
+    // useEffect(() => {
+    //     console.log("[Store] Render lần:", ++countReRender);
+    //     console.log("Page-save:", pageSave);
+    // }, [pageSave]);
 
     const context = {
         isMobile,

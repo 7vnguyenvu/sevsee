@@ -87,10 +87,10 @@ export default function Page() {
 
         if (textarea) {
             const lines = textarea.value.split("\n");
-            var atIndex = 0;
+            let atIndex = 0;
 
             if (row) {
-                for (var i = 0; i < row; i++) {
+                for (let i = 0; i < row; i++) {
                     atIndex += lines[i].length;
                 }
             }

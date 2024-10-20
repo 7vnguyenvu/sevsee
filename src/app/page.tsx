@@ -1,7 +1,7 @@
 "use client";
 
 import { BOTTOMMENU_HEIGHT, BottomMenu, Header, MARGIN_HEADER, Main, Main_Container, chooseThemeValueIn, color } from "@/components";
-import { Box, Stack, Typography } from "@mui/joy";
+import { Box, Typography } from "@mui/joy";
 import { Fragment, useLayoutEffect, useState } from "react";
 import { HomeEn, HomeVi } from "@/locales";
 

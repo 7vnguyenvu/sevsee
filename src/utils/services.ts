@@ -1,16 +1,3 @@
-export function arrayItemMove<T>(array: any[], fromIndex: number, toIndex: number): T[] {
-    if (toIndex < 0) {
-        toIndex = 0;
-    } else if (toIndex > array.length) {
-        toIndex = array.length;
-    }
-
-    const newArray = [...array];
-    const item = newArray.splice(fromIndex, 1)[0];
-    newArray.splice(toIndex, 0, item);
-    return newArray;
-}
-
 export function isddMMyyyy(value: string) {
     // định dạng ngày dd/MM/yyyy
     const dateFormat = /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[012])\/\d{4}$/;
