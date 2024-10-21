@@ -66,7 +66,7 @@ export function ImageGetter_Tools({ lang }: { lang: "en" | "vi" }) {
                     </Typography>
                     <Stack direction={"row"} gap={0.5} alignItems={"center"} sx={{ mt: 0.4 }}>
                         <BarChart />
-                        <Typography sx={{ fontSize: "sm", fontWeight: "lg" }}>79 {text[lang].usedLable}</Typography>
+                        <Typography sx={{ fontSize: "sm", fontWeight: "lg" }}>7M+ {text[lang].usedLable}</Typography>
                     </Stack>
                 </div>
                 <LinkTo url="tools/image-getter" sx={{ fontWeight: 600 }}>
