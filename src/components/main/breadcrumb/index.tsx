@@ -30,7 +30,7 @@ export function Breadcrumb({ currentText, parentList }: Props) {
                 </Stack>
             </LinkTo>
             {parentList?.map((item) => (
-                <LinkTo key={item.url} url={item.url} sx={{ color: color.primary.dark }}>
+                <LinkTo key={item.url} url={item.url} sx={{ color: color.secondary.dark }}>
                     {item.text[lang]}
                 </LinkTo>
             ))}
