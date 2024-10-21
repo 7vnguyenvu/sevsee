@@ -17,6 +17,7 @@ export const color = {
     primary: {
         light: "#ff7961",
         main: "#f31d59",
+        darkMedium: "#ac004a",
         dark: "#5f0a0c",
         darkSub: "#430708",
         contrastText: "#ffffff",

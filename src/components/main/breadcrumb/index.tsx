@@ -24,7 +24,7 @@ export function Breadcrumb({ currentText, parentList }: Props) {
     return (
         <Breadcrumbs separator="/" aria-label="breadcrumbs" sx={{ fontWeight: "md" }}>
             <LinkTo url="/">
-                <Stack direction={"row"} gap={1} sx={{ alignItems: "center", color: color.primary.main }}>
+                <Stack direction={"row"} gap={1} sx={{ alignItems: "center", color: color.primary.darkMedium }}>
                     <HomeRounded sx={{ color: "inherit" }} />
                     <Typography>Trang chủ</Typography>
                 </Stack>
