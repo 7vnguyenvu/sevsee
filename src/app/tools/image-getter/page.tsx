@@ -60,6 +60,7 @@ export default function Page() {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
 
+    const [delayTimeout, setDelayTimeout] = useState<number>(5);
     const [imageURLs, setImageURLs] = useState<string>("");
     const [reloadImageURLs, setReloadImageURLs] = useState<boolean>(false);
     const [folderName, setFolderName] = useState<string>("");
@@ -296,7 +297,7 @@ export default function Page() {
 
         for (let i = 0; i < urls.length; i++) {
             const url = urls[i];
-            const { isValid, errorType } = await checkImageValidity(url);
+            const { isValid, errorType } = await checkImageValidity(url, delayTimeout * 1000);
 
             if (isValid) {
                 validImageList.push({ row: i + 1, url: url });
@@ -571,6 +572,21 @@ export default function Page() {
                             </Grid>
 
                             <Grid item xs={12} md={12}>
+                                <Stack direction={"row"} alignItems={"center"} justifyContent={"end"} gap={1}>
+                                    <Typography level="body-sm" textColor="neutral.600">
+                                        {T.page.labelDelay} (3s → 10s):
+                                    </Typography>
+                                    <input
+                                        type="number"
+                                        value={delayTimeout}
+                                        onChange={(e: React.ChangeEvent<any>) => setDelayTimeout(e.target.value)}
+                                        min={3}
+                                        max={10}
+                                    />
+                                    <Typography level="body-sm" textColor="neutral.600">
+                                        (s)
+                                    </Typography>
+                                </Stack>
                                 <textarea
                                     ref={textareaRef}
                                     value={imageURLs}
@@ -665,7 +681,7 @@ export default function Page() {
                                                             {Object.keys(groupedErrors).map((errorType) => (
                                                                 <div key={errorType}>
                                                                     <Typography level="title-md" textColor={color.warning.main}>
-                                                                        {`${errorType}`}
+                                                                        {`${errorType} (${groupedErrors[errorType].length})`}
                                                                     </Typography>
                                                                     <ul
                                                                         style={{
@@ -750,7 +766,7 @@ export default function Page() {
                                     <Stack direction={"row"} gap={2} sx={{ alignItems: "center", mt: 1 }}>
                                         <Typography level="body-sm" textColor="neutral.600">
                                             {/* Thống kê số lượng ảnh trùng */}
-                                            {T.page.analytics.duplicates}: {Object.keys(duplicates).length}
+                                            {T.page.analytics.duplicates}: {Object.keys(duplicates).length} {T.page.analytics.duplicatesGroup}
                                         </Typography>
 
                                         {/* Nút xóa ảnh có chất lượng thấp */}
