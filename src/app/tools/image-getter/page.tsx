@@ -65,7 +65,7 @@ export default function Page() {
     const [folderName, setFolderName] = useState<string>("");
     const [alert, setAlert] = useState<string | null>(null);
     const [loadingValidImages, setLoadingValidImages] = useState<boolean>(false);
-    const [validImages, setValidImages] = useState<string[]>([]);
+    const [validImages, setValidImages] = useState<{ row: number; url: string }[]>([]);
     const [excludedImages, setExcludedImages] = useState<Set<string>>(new Set());
     const [progress, setProgress] = useState<number>(0); // State to track progress
     const [errorImages, setErrorImages] = useState<URLErrorImage[]>([]); // Danh sách URL lỗi
@@ -138,7 +138,7 @@ export default function Page() {
             const imageGroups: Record<string, number[]> = {};
 
             for (let i = 0; i < validImages.length; i++) {
-                const imageUrl = validImages[i];
+                const imageUrl = validImages[i].url;
                 const fileName = imageUrl.split("/").pop()?.split("?")[0]; // Lấy tên file từ URL
 
                 if (fileName) {
@@ -158,95 +158,98 @@ export default function Page() {
         findDuplicates();
     }, [validImages]);
 
+    // const handleRemoveAllLowerQuality = async () => {
+    //     setIsHandleDuplicateLoading(true); // Hiển thị loading
+    //     setProgressHandleImage(0); // Đặt tiến độ bắt đầu từ 0%
+
+    //     // Hàm để so sánh ảnh pixel theo pixel
+    //     const areImagesIdentical = async (url1: string, url2: string): Promise<boolean> => {
+    //         const img1 = await loadImage(url1);
+    //         const img2 = await loadImage(url2);
+
+    //         if (img1.width !== img2.width || img1.height !== img2.height) return false;
+
+    //         const canvas1 = document.createElement("canvas");
+    //         const canvas2 = document.createElement("canvas");
+    //         const ctx1 = canvas1.getContext("2d");
+    //         const ctx2 = canvas2.getContext("2d");
+
+    //         canvas1.width = img1.width;
+    //         canvas1.height = img1.height;
+    //         canvas2.width = img2.width;
+    //         canvas2.height = img2.height;
+
+    //         ctx1?.drawImage(img1, 0, 0);
+    //         ctx2?.drawImage(img2, 0, 0);
+
+    //         const data1 = ctx1?.getImageData(0, 0, img1.width, img1.height).data;
+    //         const data2 = ctx2?.getImageData(0, 0, img2.width, img2.height).data;
+
+    //         // So sánh pixel theo pixel
+    //         if (data1 && data2) {
+    //             for (let i = 0; i < data1.length; i++) {
+    //                 if (data1[i] !== data2[i]) {
+    //                     return false;
+    //                 }
+    //             }
+    //             return true;
+    //         }
+    //         return false;
+    //     };
+
+    //     let updatedValidImages = [...validImages];
+    //     const processedGroups = new Set();
+
+    //     // Xử lý từng nhóm ảnh trùng lặp
+    //     const totalGroups = Object.keys(duplicates).length;
+    //     let processedGroupsCount = 0;
+
+    //     for (const [fileName, indexes] of Object.entries(duplicates)) {
+    //         if (processedGroups.has(fileName)) continue;
+
+    //         // Lấy tất cả các URL ảnh trùng lặp
+    //         const duplicateUrls = indexes.map((index) => validImages[index - 1]);
+
+    //         if (duplicateUrls.length > 1) {
+    //             const resolutions = await Promise.all(duplicateUrls.map((url) => getImageResolution(url)));
+
+    //             // Tìm ảnh có độ phân giải cao nhất
+    //             const highestQualityIndex = resolutions.reduce((maxIdx, current, idx, arr) => {
+    //                 return current.width * current.height > arr[maxIdx].width * arr[maxIdx].height ? idx : maxIdx;
+    //             }, 0);
+
+    //             const highestQualityUrl = duplicateUrls[highestQualityIndex];
+
+    //             // Đánh dấu các ảnh cần loại bỏ
+    //             const duplicatesToRemove = new Set<string>();
+
+    //             // Xử lý các ảnh có chất lượng giống nhau
+    //             for (let i = 0; i < duplicateUrls.length; i++) {
+    //                 for (let j = i + 1; j < duplicateUrls.length; j++) {
+    //                     if (await areImagesIdentical(duplicateUrls[i], duplicateUrls[j])) {
+    //                         duplicatesToRemove.add(duplicateUrls[j]);
+    //                     }
+    //                 }
+    //             }
+
+    //             // Loại bỏ tất cả các ảnh trùng lặp có chất lượng thấp hơn hoặc trùng tên
+    //             updatedValidImages = updatedValidImages.filter((url) => url === highestQualityUrl || !duplicatesToRemove.has(url));
+    //             processedGroups.add(fileName);
+    //         }
+
+    //         processedGroupsCount++;
+    //         setProgressHandleImage(Math.round((processedGroupsCount / totalGroups) * 100));
+    //     }
+
+    //     // Loại bỏ ảnh có chất lượng giống nhau hoặc trùng tên
+    //     const uniqueValidImages = Array.from(new Set(updatedValidImages));
+
+    //     setValidImages(uniqueValidImages);
+    //     setIsHandleDuplicateLoading(false);
+    //     setProgressHandleImage(100);
+    // };
     const handleRemoveAllLowerQuality = async () => {
-        setIsHandleDuplicateLoading(true); // Hiển thị loading
-        setProgressHandleImage(0); // Đặt tiến độ bắt đầu từ 0%
-
-        // Hàm để so sánh ảnh pixel theo pixel
-        const areImagesIdentical = async (url1: string, url2: string): Promise<boolean> => {
-            const img1 = await loadImage(url1);
-            const img2 = await loadImage(url2);
-
-            if (img1.width !== img2.width || img1.height !== img2.height) return false;
-
-            const canvas1 = document.createElement("canvas");
-            const canvas2 = document.createElement("canvas");
-            const ctx1 = canvas1.getContext("2d");
-            const ctx2 = canvas2.getContext("2d");
-
-            canvas1.width = img1.width;
-            canvas1.height = img1.height;
-            canvas2.width = img2.width;
-            canvas2.height = img2.height;
-
-            ctx1?.drawImage(img1, 0, 0);
-            ctx2?.drawImage(img2, 0, 0);
-
-            const data1 = ctx1?.getImageData(0, 0, img1.width, img1.height).data;
-            const data2 = ctx2?.getImageData(0, 0, img2.width, img2.height).data;
-
-            // So sánh pixel theo pixel
-            if (data1 && data2) {
-                for (let i = 0; i < data1.length; i++) {
-                    if (data1[i] !== data2[i]) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            return false;
-        };
-
-        let updatedValidImages = [...validImages];
-        const processedGroups = new Set();
-
-        // Xử lý từng nhóm ảnh trùng lặp
-        const totalGroups = Object.keys(duplicates).length;
-        let processedGroupsCount = 0;
-
-        for (const [fileName, indexes] of Object.entries(duplicates)) {
-            if (processedGroups.has(fileName)) continue;
-
-            // Lấy tất cả các URL ảnh trùng lặp
-            const duplicateUrls = indexes.map((index) => validImages[index - 1]);
-
-            if (duplicateUrls.length > 1) {
-                const resolutions = await Promise.all(duplicateUrls.map((url) => getImageResolution(url)));
-
-                // Tìm ảnh có độ phân giải cao nhất
-                const highestQualityIndex = resolutions.reduce((maxIdx, current, idx, arr) => {
-                    return current.width * current.height > arr[maxIdx].width * arr[maxIdx].height ? idx : maxIdx;
-                }, 0);
-
-                const highestQualityUrl = duplicateUrls[highestQualityIndex];
-
-                // Đánh dấu các ảnh cần loại bỏ
-                const duplicatesToRemove = new Set<string>();
-
-                // Xử lý các ảnh có chất lượng giống nhau
-                for (let i = 0; i < duplicateUrls.length; i++) {
-                    for (let j = i + 1; j < duplicateUrls.length; j++) {
-                        if (await areImagesIdentical(duplicateUrls[i], duplicateUrls[j])) {
-                            duplicatesToRemove.add(duplicateUrls[j]);
-                        }
-                    }
-                }
-
-                // Loại bỏ tất cả các ảnh trùng lặp có chất lượng thấp hơn hoặc trùng tên
-                updatedValidImages = updatedValidImages.filter((url) => url === highestQualityUrl || !duplicatesToRemove.has(url));
-                processedGroups.add(fileName);
-            }
-
-            processedGroupsCount++;
-            setProgressHandleImage(Math.round((processedGroupsCount / totalGroups) * 100));
-        }
-
-        // Loại bỏ ảnh có chất lượng giống nhau hoặc trùng tên
-        const uniqueValidImages = Array.from(new Set(updatedValidImages));
-
-        setValidImages(uniqueValidImages);
-        setIsHandleDuplicateLoading(false);
-        setProgressHandleImage(100);
+        console.log(duplicates);
     };
 
     // Hàm để load ảnh từ URL
@@ -288,7 +291,7 @@ export default function Page() {
             .map((url) => url.trim())
             .filter((url) => url !== "");
 
-        const validImageList: string[] = [];
+        const validImageList: { row: number; url: string }[] = [];
         const errImageList: URLErrorImage[] = [];
 
         for (let i = 0; i < urls.length; i++) {
@@ -296,7 +299,7 @@ export default function Page() {
             const { isValid, errorType } = await checkImageValidity(url);
 
             if (isValid) {
-                validImageList.push(url);
+                validImageList.push({ row: i + 1, url: url });
             } else {
                 errImageList.push({ url, index: i + 1, errorType: errorType || "Lỗi tải ảnh" });
             }
@@ -353,15 +356,15 @@ export default function Page() {
         const fetchBlobs = async () => {
             const newBlobUrls: Record<string, string | null> = {};
 
-            for (const url of validImages) {
+            for (const item of validImages) {
                 try {
-                    const response = await fetch(url);
+                    const response = await fetch(item.url);
                     const blob = await response.blob();
                     const blobUrl = URL.createObjectURL(blob);
-                    newBlobUrls[url] = blobUrl;
+                    newBlobUrls[item.url] = blobUrl;
                 } catch (error) {
                     // console.error(`Failed to fetch or create URL for image at ${url}`, error);
-                    newBlobUrls[url] = null; // Set to null if there's an error
+                    newBlobUrls[item.url] = null; // Set to null if there's an error
                 }
             }
 
@@ -413,17 +416,17 @@ export default function Page() {
         };
 
         const downloadPromises = validImages
-            .filter((url) => !excludedImages.has(url))
-            .map(async (url) => {
+            .filter((img) => !excludedImages.has(img.url))
+            .map(async (item) => {
                 try {
                     let finalBlob;
                     let fileName = "";
                     let extension = "";
 
-                    if (url.startsWith("data:image/")) {
+                    if (item.url.startsWith("data:image/")) {
                         // Nếu là base64, tạo Blob từ base64
-                        const byteString = atob(url.split(",")[1]);
-                        const mimeString = url.split(",")[0].split(":")[1].split(";")[0];
+                        const byteString = atob(item.url.split(",")[1]);
+                        const mimeString = item.url.split(",")[0].split(":")[1].split(";")[0];
                         const ab = new Uint8Array(byteString.length);
                         for (let i = 0; i < byteString.length; i++) {
                             ab[i] = byteString.charCodeAt(i);
@@ -433,11 +436,11 @@ export default function Page() {
                         extension = mimeString.split("/")[1]; // Lấy phần mở rộng từ mime type
                     } else {
                         // Nếu là URL, sử dụng proxy để tải ảnh
-                        const proxyUrl = getProxyImageUrl(url);
+                        const proxyUrl = getProxyImageUrl(item.url);
                         const response = await fetch(proxyUrl);
                         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                         finalBlob = await response.blob();
-                        const urlParts = url.split("/");
+                        const urlParts = item.url.split("/");
                         fileName = urlParts[urlParts.length - 1].split("?")[0];
                         extension = `${fileName.split(".").pop()}`;
                     }
@@ -453,7 +456,7 @@ export default function Page() {
                     folder?.file(`${uniqueFileName}.${extension}`, finalBlob);
                     URL.revokeObjectURL(img.src);
                 } catch (error) {
-                    console.error(`Error downloading image from ${url}:`, error);
+                    console.error(`Error downloading image from ${item.url}:`, error);
                     // Có thể thêm logic để thông báo cho người dùng về ảnh không tải được
                 }
             });
@@ -840,7 +843,7 @@ export default function Page() {
                                     {validImages.length > 0 && (
                                         <Box sx={{ mt: 2 }}>
                                             <Divider sx={{ my: 2 }}>
-                                                {validImages.filter((url) => !excludedImages.has(url)).length} {T.page.showStart}
+                                                {validImages.filter((item) => !excludedImages.has(item.url)).length} {T.page.showStart}
                                             </Divider>
                                         </Box>
                                     )}
@@ -851,13 +854,13 @@ export default function Page() {
                             {validImages.length > 0 && (
                                 <Grid item xs={12}>
                                     <Grid container spacing={{ xs: 1, md: 1 }} sx={{ flexGrow: 1, overflow: "hidden" }}>
-                                        {validImages.map((imageUrl, index) => {
+                                        {validImages.map((item, index) => {
                                             // Check if the image is excluded
-                                            if (excludedImages.has(imageUrl)) {
+                                            if (excludedImages.has(item.url)) {
                                                 return null; // Skip rendering the excluded image
                                             }
 
-                                            const proxyUrl = getProxyImageUrl(imageUrl);
+                                            const proxyUrl = getProxyImageUrl(item.url);
                                             const serialNum = index + 1;
 
                                             return (
@@ -892,7 +895,7 @@ export default function Page() {
                                                             <Stack direction={"row"} alignItems={"center"} gap={1}>
                                                                 <Tooltip title={"Vị trí URL"} arrow size="sm" placement="bottom-end">
                                                                     <HighlightAlt
-                                                                        onClick={() => handleHighlightErrorUrl(imageUrl, serialNum)}
+                                                                        onClick={() => handleHighlightErrorUrl(item.url, item.row)}
                                                                         sx={{
                                                                             color: "white",
                                                                             fontSize: "1rem",
@@ -932,7 +935,7 @@ export default function Page() {
                                                             src={proxyUrl}
                                                             alt={`preview-${index}`}
                                                             onError={(e) => {
-                                                                console.error(`Failed to load image at ${imageUrl}`);
+                                                                console.error(`Failed to load image at ${item.url}`);
                                                                 (e.target as HTMLImageElement).src = "/path/to/fallback/image.jpg"; // Thêm một ảnh fallback
                                                             }}
                                                             style={{
@@ -957,7 +960,7 @@ export default function Page() {
                                                                 fontSize: "0.7rem",
                                                             }}
                                                             onClick={() => {
-                                                                setExcludedImages((prev) => new Set(prev).add(imageUrl));
+                                                                setExcludedImages((prev) => new Set(prev).add(item.url));
                                                             }}
                                                         >
                                                             <Delete />
@@ -975,7 +978,7 @@ export default function Page() {
                                                                 margin: "5px",
                                                                 fontSize: "0.7rem",
                                                             }}
-                                                            onClick={() => downloadSingleImage(imageUrl)}
+                                                            onClick={() => downloadSingleImage(item.url)}
                                                         >
                                                             <Download />
                                                         </Button>
