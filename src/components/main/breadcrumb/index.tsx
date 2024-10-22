@@ -22,11 +22,11 @@ export function Breadcrumb({ currentText, parentList }: Props) {
     const { lang } = useGlobalContext();
 
     return (
-        <Breadcrumbs separator="/" aria-label="breadcrumbs" sx={{ fontWeight: "md" }}>
+        <Breadcrumbs separator="\" aria-label="breadcrumbs" sx={{ fontWeight: "md", fontSize: "sm" }}>
             <LinkTo url="/">
                 <Stack direction={"row"} gap={1} sx={{ alignItems: "center", color: color.primary.darkMedium }}>
                     <HomeRounded sx={{ color: "inherit" }} />
-                    <Typography>Trang chủ</Typography>
+                    {/* <Typography>Trang chủ</Typography> */}
                 </Stack>
             </LinkTo>
             {parentList?.map((item) => (
@@ -34,7 +34,7 @@ export function Breadcrumb({ currentText, parentList }: Props) {
                     {item.text[lang]}
                 </LinkTo>
             ))}
-            <Typography sx={{ color: color.black.dark, fontWeight: "md" }}>{currentText}</Typography>
+            <Typography sx={{ color: color.black.dark }}>{currentText}</Typography>
         </Breadcrumbs>
     );
 }
