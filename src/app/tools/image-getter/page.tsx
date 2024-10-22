@@ -2,7 +2,7 @@
 
 import { Box, Button, CircularProgress, Divider, LinearProgress, Stack, Tooltip, Typography } from "@mui/joy";
 import { Breadcrumb, FindImageLinksModal, Header, MARGIN_HEADER, Main, Main_Container, chooseThemeValueIn, color, isBase64Image } from "@/components";
-import { Close, ContentCopy, Delete, Download, ErrorOutline, HighlightAlt, InfoOutlined, OpenInNew, Refresh } from "@mui/icons-material";
+import { Close, ContentCopy, Delete, Download, ErrorOutline, HighlightAlt, OpenInNew, Refresh } from "@mui/icons-material";
 import { ToolEn, ToolVi } from "@/locales";
 import { useEffect, useRef, useState } from "react";
 
@@ -58,6 +58,7 @@ export default function Page() {
     const T = lang === "en" ? ToolEn.imageGetter : ToolVi.imageGetter;
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const tooltipRef = useRef<HTMLDivElement>(null);
 
     const [imageURLs, setImageURLs] = useState<string>("");
     const [reloadImageURLs, setReloadImageURLs] = useState<boolean>(false);
@@ -79,6 +80,23 @@ export default function Page() {
     const handleToggleTooltipShowError = () => {
         setShowTooltipShowError(!showTooltipShowError);
     };
+
+    // Hàm để kiểm tra nếu click bên ngoài phần tử có Tooltip
+    const handleClickOutside = (event: MouseEvent) => {
+        if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+            setShowTooltipShowError(false);
+        }
+    };
+
+    useEffect(() => {
+        // Thêm sự kiện lắng nghe khi component mount
+        document.addEventListener("mousedown", handleClickOutside);
+
+        // Loại bỏ sự kiện lắng nghe khi component unmount
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     // Khi người dùng nhấn vào một URL lỗi
     const handleHighlightErrorUrl = (url: string, urlIndex: number) => {
@@ -597,13 +615,8 @@ export default function Page() {
                                         </Typography>
                                         {errorImages.length > 0 && (
                                             <Tooltip
-                                                sx={
-                                                    {
-                                                        // bgcolor: color.tooltip.dark,
-                                                    }
-                                                }
                                                 title={
-                                                    <Stack gap={1}>
+                                                    <Stack gap={1} ref={tooltipRef}>
                                                         <Stack direction={"row"} justifyContent={"space-between"}>
                                                             <Typography level="title-lg" textColor={color.white.main} sx={{ p: 1 }}>
                                                                 Danh sách URL lỗi
@@ -621,7 +634,7 @@ export default function Page() {
                                                                 <Close sx={{ color: color.white.main }} />
                                                             </Box>
                                                         </Stack>
-                                                        <Divider></Divider>
+                                                        <Divider />
                                                         <Stack
                                                             sx={{
                                                                 // bgcolor: color.tooltip.dark,
@@ -661,23 +674,8 @@ export default function Page() {
                                                                     >
                                                                         {groupedErrors[errorType].map(({ url, index }) => (
                                                                             <li key={index}>
-                                                                                <Stack
-                                                                                    direction="row"
-                                                                                    gap={1}
-                                                                                    sx={{
-                                                                                        borderBottom:
-                                                                                            index <= groupedErrors[errorType].length - 1
-                                                                                                ? `thin solid #000`
-                                                                                                : `none`,
-                                                                                        py: 1,
-                                                                                    }}
-                                                                                >
-                                                                                    <Typography
-                                                                                        sx={{
-                                                                                            minWidth: "10%",
-                                                                                        }}
-                                                                                        level="title-sm"
-                                                                                    >
+                                                                                <Stack direction="row" gap={1} sx={{ py: 1 }}>
+                                                                                    <Typography sx={{ minWidth: "10%" }} level="title-sm">
                                                                                         {`URL [${index}]`}:
                                                                                     </Typography>
 
@@ -724,6 +722,7 @@ export default function Page() {
                                                                                         </a>
                                                                                     </Stack>
                                                                                 </Stack>
+                                                                                {index <= groupedErrors[errorType].length - 1 ? <Divider /> : ""}
                                                                             </li>
                                                                         ))}
                                                                     </ul>
