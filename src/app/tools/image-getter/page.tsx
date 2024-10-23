@@ -579,7 +579,7 @@ export default function Page() {
                                     <input
                                         type="number"
                                         value={delayTimeout}
-                                        onChange={(e: React.ChangeEvent<any>) => setDelayTimeout(e.target.value)}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDelayTimeout(+e.target.value)}
                                         min={3}
                                         max={10}
                                     />
