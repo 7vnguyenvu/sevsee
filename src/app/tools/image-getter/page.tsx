@@ -121,6 +121,7 @@ export default function Page() {
         const row = urlIndex - 1;
 
         if (textarea) {
+            window.scrollTo(0, textarea.getBoundingClientRect().top + window.pageYOffset - (MARGIN_HEADER + 90));
             const lines = textarea.value.split("\n");
             let atIndex = 0;
 
@@ -600,9 +601,11 @@ export default function Page() {
                                         color="primary"
                                         disabled={reloadImageURLs}
                                         loading={reloadImageURLs}
-                                        startDecorator={<Refresh />}
                                     >
-                                        {T.page.buttonReload}
+                                        <Stack direction={"row"} gap={1} alignItems={"center"} justifyContent={"center"}>
+                                            <Refresh />
+                                            {!isMobile && T.page.buttonReload}
+                                        </Stack>
                                     </Button>
                                 </Stack>
                             </Grid>
@@ -834,8 +837,6 @@ export default function Page() {
                                                 }
                                                 placement="bottom-start"
                                                 open={showTooltipShowError} // Hiển thị khi icon được click
-                                                onClose={() => setShowTooltipShowError(false)}
-                                                disableHoverListener // Không hiển thị khi hover
                                                 arrow // Mũi tên trên tooltip
                                             >
                                                 <ErrorOutline

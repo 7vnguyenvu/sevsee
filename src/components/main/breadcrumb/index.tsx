@@ -22,7 +22,7 @@ export function Breadcrumb({ currentText, parentList }: Props) {
     const { lang } = useGlobalContext();
 
     return (
-        <Breadcrumbs separator="\" aria-label="breadcrumbs" sx={{ fontWeight: "md", fontSize: "sm" }}>
+        <Breadcrumbs separator="\" aria-label="breadcrumbs" sx={{ fontWeight: "md", fontSize: { xs: "xs", sm: "sm" } }}>
             <LinkTo url="/">
                 <Stack direction={"row"} gap={1} sx={{ alignItems: "center", color: color.primary.darkMedium }}>
                     <HomeRounded sx={{ color: "inherit" }} />
