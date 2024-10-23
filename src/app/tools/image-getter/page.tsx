@@ -781,7 +781,7 @@ export default function Page() {
                                                                                             }}
                                                                                             level="title-sm"
                                                                                         >
-                                                                                            {url.substring(0, 50)}
+                                                                                            {isMobile ? url.substring(0, 20) : url.substring(0, 50)}
                                                                                             {url.length > 50 && "[...]"}
                                                                                         </Typography>
                                                                                     </Stack>
