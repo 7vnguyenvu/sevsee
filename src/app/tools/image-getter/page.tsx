@@ -756,72 +756,81 @@ export default function Page() {
                                                                             margin: 0,
                                                                         }}
                                                                     >
-                                                                        {groupedErrors[errorType].map(({ url, index }, mapIndex) => (
-                                                                            <li key={url + index}>
-                                                                                <Stack
-                                                                                    direction="row"
-                                                                                    gap={2}
-                                                                                    justifyContent="space-between"
-                                                                                    sx={{ py: 1 }}
-                                                                                >
-                                                                                    <Stack direction="row" gap={1}>
-                                                                                        <Typography sx={{ minWidth: "10%" }} level="title-sm">
-                                                                                            {`URL [${index}]`}:
-                                                                                        </Typography>
-                                                                                        <Typography
-                                                                                            onClick={() => handleHighlightErrorUrl(url, index)}
-                                                                                            sx={{
-                                                                                                flexGrow: 1,
-                                                                                                // wordBreak: "break-all",
-                                                                                                color: color.pink.light,
-                                                                                                ":hover": {
-                                                                                                    color: color.secondary.main,
-                                                                                                    cursor: "pointer",
-                                                                                                },
-                                                                                            }}
-                                                                                            level="title-sm"
-                                                                                        >
-                                                                                            {isMobile ? url.substring(0, 20) : url.substring(0, 50)}
-                                                                                            {url.length > 50 && "[...]"}
-                                                                                        </Typography>
-                                                                                    </Stack>
+                                                                        {groupedErrors[errorType].map(({ url, index }, mapIndex) => {
+                                                                            const length = isMobile ? 15 : 50;
 
-                                                                                    <Stack direction={"row"} alignItems={"start"} gap={1}>
-                                                                                        <ContentCopy
-                                                                                            onClick={() => handleCopyToClipboard(url, index)}
-                                                                                            sx={{
-                                                                                                fontSize: "md",
-                                                                                                color:
-                                                                                                    statusCopyToClipboard.row === index
-                                                                                                        ? color.secondary.main
-                                                                                                        : "",
-                                                                                                ":hover": {
-                                                                                                    color: color.secondary.main,
-                                                                                                    cursor: "pointer",
-                                                                                                },
-                                                                                            }}
-                                                                                        />
-                                                                                        <a
-                                                                                            href={`${url}`}
-                                                                                            target="_blank"
-                                                                                            rel="noopener noreferrer nofollow"
-                                                                                            style={{ textDecoration: "none" }}
-                                                                                        >
-                                                                                            <OpenInNew
+                                                                            return (
+                                                                                <li key={url + index}>
+                                                                                    <Stack
+                                                                                        direction="row"
+                                                                                        gap={2}
+                                                                                        justifyContent="space-between"
+                                                                                        sx={{ py: 1 }}
+                                                                                    >
+                                                                                        <Stack direction="row" gap={1}>
+                                                                                            <Typography sx={{ minWidth: "10%" }} level="title-sm">
+                                                                                                {`URL [${index}]`}:
+                                                                                            </Typography>
+                                                                                            <Typography
+                                                                                                onClick={() => handleHighlightErrorUrl(url, index)}
+                                                                                                sx={{
+                                                                                                    flexGrow: 1,
+                                                                                                    // wordBreak: "break-all",
+                                                                                                    color: color.pink.light,
+                                                                                                    ":hover": {
+                                                                                                        color: color.secondary.main,
+                                                                                                        cursor: "pointer",
+                                                                                                    },
+                                                                                                }}
+                                                                                                level="title-sm"
+                                                                                            >
+                                                                                                {`${url.substring(0, length)} ${
+                                                                                                    url.length > length && "[...]"
+                                                                                                }`}
+                                                                                            </Typography>
+                                                                                        </Stack>
+
+                                                                                        <Stack direction={"row"} alignItems={"start"} gap={1}>
+                                                                                            <ContentCopy
+                                                                                                onClick={() => handleCopyToClipboard(url, index)}
                                                                                                 sx={{
                                                                                                     fontSize: "md",
+                                                                                                    color:
+                                                                                                        statusCopyToClipboard.row === index
+                                                                                                            ? color.secondary.main
+                                                                                                            : "",
                                                                                                     ":hover": {
                                                                                                         color: color.secondary.main,
                                                                                                         cursor: "pointer",
                                                                                                     },
                                                                                                 }}
                                                                                             />
-                                                                                        </a>
+                                                                                            <a
+                                                                                                href={`${url}`}
+                                                                                                target="_blank"
+                                                                                                rel="noopener noreferrer nofollow"
+                                                                                                style={{ textDecoration: "none" }}
+                                                                                            >
+                                                                                                <OpenInNew
+                                                                                                    sx={{
+                                                                                                        fontSize: "md",
+                                                                                                        ":hover": {
+                                                                                                            color: color.secondary.main,
+                                                                                                            cursor: "pointer",
+                                                                                                        },
+                                                                                                    }}
+                                                                                                />
+                                                                                            </a>
+                                                                                        </Stack>
                                                                                     </Stack>
-                                                                                </Stack>
-                                                                                {mapIndex < groupedErrors[errorType].length - 1 ? <Divider /> : ""}
-                                                                            </li>
-                                                                        ))}
+                                                                                    {mapIndex < groupedErrors[errorType].length - 1 ? (
+                                                                                        <Divider />
+                                                                                    ) : (
+                                                                                        ""
+                                                                                    )}
+                                                                                </li>
+                                                                            );
+                                                                        })}
                                                                     </ul>
                                                                 </div>
                                                             ))}
