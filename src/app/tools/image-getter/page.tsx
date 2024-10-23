@@ -1,8 +1,8 @@
 "use client";
 
-import { Box, Button, CircularProgress, Divider, LinearProgress, Stack, Tooltip, Typography } from "@mui/joy";
+import { Box, Button, Divider, LinearProgress, Stack, Tooltip, Typography } from "@mui/joy";
 import { Breadcrumb, FindImageLinksModal, Header, MARGIN_HEADER, Main, Main_Container, chooseThemeValueIn, color, isBase64Image } from "@/components";
-import { Close, ContentCopy, Delete, Download, ErrorOutline, HighlightAlt, OpenInNew, Refresh } from "@mui/icons-material";
+import { Close, ContentCopy, CopyAll, Delete, Download, ErrorOutline, HighlightAlt, OpenInNew, Refresh } from "@mui/icons-material";
 import { ToolEn, ToolVi } from "@/locales";
 import { useEffect, useRef, useState } from "react";
 
@@ -78,6 +78,22 @@ export default function Page() {
     const [isHandleDuplicateLoading, setIsHandleDuplicateLoading] = useState<boolean>(false); // Loading state for the button
     const [progressHandleImage, setProgressHandleImage] = useState<number>(0); // State to track progress
 
+    const [statusCopyToClipboard, setStatusCopyToClipboard] = useState<{
+        url: string;
+        row: number;
+        message: {
+            vi: string;
+            en: string;
+        };
+    }>({
+        url: "",
+        row: 0,
+        message: {
+            vi: "",
+            en: "",
+        },
+    });
+
     const handleToggleTooltipShowError = () => {
         setShowTooltipShowError(!showTooltipShowError);
     };
@@ -128,10 +144,22 @@ export default function Page() {
     };
 
     // Sao chép URL vào clipboard
-    const handleCopyToClipboard = (url: string) => {
+    const handleCopyToClipboard = (url: string, row: number) => {
         navigator.clipboard.writeText(url).catch((err) => {
             console.error("Failed to copy: ", err);
         });
+
+        const msg = {
+            en: `You just copied the URL [${row}]!`,
+            vi: `Bạn vừa sao chép URL [${row}]!`,
+        };
+
+        if (row === -1) {
+            msg.en = "You just copied all the URLs below!";
+            msg.vi = "Bạn vừa sao chép tất cả URL bên dưới!";
+        }
+
+        setStatusCopyToClipboard({ url: url, row: row, message: msg });
     };
 
     useEffect(() => {
@@ -280,7 +308,7 @@ export default function Page() {
             img.onerror = (e) => {
                 clearTimeout(timer);
                 const error = e as ErrorEvent;
-                resolve({ isValid: false, errorType: error.message || "Unknown error" });
+                resolve({ isValid: false, errorType: error.message || "Unknown or 404" });
             };
             img.src = url;
         });
@@ -327,6 +355,14 @@ export default function Page() {
         setDuplicates({});
         setIsHandleDuplicateLoading(false);
         setProgressHandleImage(0);
+        setStatusCopyToClipboard({
+            url: "",
+            row: 0,
+            message: {
+                vi: "",
+                en: "",
+            },
+        });
     };
 
     const handleClearContent = () => {
@@ -659,8 +695,8 @@ export default function Page() {
                                                                 // bgcolor: color.tooltip.dark,
                                                                 position: "relative",
                                                                 p: 1,
-                                                                minWidth: 400,
-                                                                maxWidth: 800,
+                                                                minWidth: { xs: 280, sm: 400 },
+                                                                maxWidth: { xs: 280, sm: 600 },
                                                                 maxHeight: 360,
                                                                 overflow: "overlay",
                                                                 "&::-webkit-scrollbar": {
@@ -680,9 +716,35 @@ export default function Page() {
                                                         >
                                                             {Object.keys(groupedErrors).map((errorType) => (
                                                                 <div key={errorType}>
-                                                                    <Typography level="title-md" textColor={color.warning.main}>
-                                                                        {`${errorType} (${groupedErrors[errorType].length})`}
-                                                                    </Typography>
+                                                                    <Stack
+                                                                        direction={"row"}
+                                                                        alignItems={"center"}
+                                                                        justifyContent={"space-between"}
+                                                                        gap={2}
+                                                                    >
+                                                                        <Typography level="title-md" textColor={color.warning.main}>
+                                                                            {`${errorType} (${groupedErrors[errorType].length})`}
+                                                                        </Typography>
+                                                                        <Stack direction={"row"} gap={1}>
+                                                                            <CopyAll
+                                                                                onClick={() => {
+                                                                                    let urls = "";
+                                                                                    groupedErrors[errorType].forEach(({ url, index }, mapIndex) => {
+                                                                                        urls += `${url}\n`;
+                                                                                    });
+
+                                                                                    handleCopyToClipboard(urls, -1);
+                                                                                }}
+                                                                                sx={{
+                                                                                    ":hover": {
+                                                                                        color: color.secondary.main,
+                                                                                        cursor: "pointer",
+                                                                                    },
+                                                                                }}
+                                                                            />{" "}
+                                                                        </Stack>
+                                                                    </Stack>
+                                                                    <Divider sx={{ mt: 1, bgcolor: color.warning.main }} />
                                                                     <ul
                                                                         style={{
                                                                             paddingLeft: "20px",
@@ -691,33 +753,45 @@ export default function Page() {
                                                                             margin: 0,
                                                                         }}
                                                                     >
-                                                                        {groupedErrors[errorType].map(({ url, index }) => (
-                                                                            <li key={index}>
-                                                                                <Stack direction="row" gap={1} sx={{ py: 1 }}>
-                                                                                    <Typography sx={{ minWidth: "10%" }} level="title-sm">
-                                                                                        {`URL [${index}]`}:
-                                                                                    </Typography>
-
-                                                                                    <Typography
-                                                                                        onClick={() => handleHighlightErrorUrl(url, index)}
-                                                                                        sx={{
-                                                                                            flexGrow: 1,
-                                                                                            wordBreak: "break-all",
-                                                                                            color: color.pink.light,
-                                                                                            ":hover": {
-                                                                                                color: color.secondary.main,
-                                                                                                cursor: "pointer",
-                                                                                            },
-                                                                                        }}
-                                                                                        level="title-sm"
-                                                                                    >
-                                                                                        {url}
-                                                                                    </Typography>
-
-                                                                                    <Stack direction={"row"} gap={1}>
-                                                                                        <ContentCopy
-                                                                                            onClick={() => handleCopyToClipboard(url)}
+                                                                        {groupedErrors[errorType].map(({ url, index }, mapIndex) => (
+                                                                            <li key={url + index}>
+                                                                                <Stack
+                                                                                    direction="row"
+                                                                                    gap={2}
+                                                                                    justifyContent="space-between"
+                                                                                    sx={{ py: 1 }}
+                                                                                >
+                                                                                    <Stack direction="row" gap={1}>
+                                                                                        <Typography sx={{ minWidth: "10%" }} level="title-sm">
+                                                                                            {`URL [${index}]`}:
+                                                                                        </Typography>
+                                                                                        <Typography
+                                                                                            onClick={() => handleHighlightErrorUrl(url, index)}
                                                                                             sx={{
+                                                                                                flexGrow: 1,
+                                                                                                // wordBreak: "break-all",
+                                                                                                color: color.pink.light,
+                                                                                                ":hover": {
+                                                                                                    color: color.secondary.main,
+                                                                                                    cursor: "pointer",
+                                                                                                },
+                                                                                            }}
+                                                                                            level="title-sm"
+                                                                                        >
+                                                                                            {url.substring(0, 50)}
+                                                                                            {url.length > 50 && "[...]"}
+                                                                                        </Typography>
+                                                                                    </Stack>
+
+                                                                                    <Stack direction={"row"} alignItems={"start"} gap={1}>
+                                                                                        <ContentCopy
+                                                                                            onClick={() => handleCopyToClipboard(url, index)}
+                                                                                            sx={{
+                                                                                                fontSize: "md",
+                                                                                                color:
+                                                                                                    statusCopyToClipboard.row === index
+                                                                                                        ? color.secondary.main
+                                                                                                        : "",
                                                                                                 ":hover": {
                                                                                                     color: color.secondary.main,
                                                                                                     cursor: "pointer",
@@ -732,6 +806,7 @@ export default function Page() {
                                                                                         >
                                                                                             <OpenInNew
                                                                                                 sx={{
+                                                                                                    fontSize: "md",
                                                                                                     ":hover": {
                                                                                                         color: color.secondary.main,
                                                                                                         cursor: "pointer",
@@ -741,13 +816,20 @@ export default function Page() {
                                                                                         </a>
                                                                                     </Stack>
                                                                                 </Stack>
-                                                                                {index <= groupedErrors[errorType].length - 1 ? <Divider /> : ""}
+                                                                                {mapIndex < groupedErrors[errorType].length - 1 ? <Divider /> : ""}
                                                                             </li>
                                                                         ))}
                                                                     </ul>
                                                                 </div>
                                                             ))}
                                                         </Stack>
+                                                        {statusCopyToClipboard.row !== 0 && (
+                                                            <Stack>
+                                                                <Typography fontSize={"xs"} textAlign={"center"}>
+                                                                    {statusCopyToClipboard.message[lang]}
+                                                                </Typography>
+                                                            </Stack>
+                                                        )}
                                                     </Stack>
                                                 }
                                                 placement="bottom-start"
