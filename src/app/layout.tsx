@@ -14,9 +14,9 @@ export const metadata: Metadata = {
     },
     description: `SEE.ME - Điểm hẹn của cảm hứng và trải nghiệm, khám phá góc nhìn mới, kết nối với những tâm hồn đồng điệu trên hành trình khám phá bản thân.`,
     alternates: {
-        canonical: "./",
+        canonical: process.env.HOME_CANONICAL,
         languages: {
-            "vi-VN": "./",
+            vi: process.env.HOME_CANONICAL,
         },
     },
     robots: {
