@@ -70,7 +70,7 @@ export function GlobalContextProvider({ children }: { children: React.ReactNode 
         [pageSave]
     );
 
-    const isMobile = useMediaQuery("(max-width:600px)");
+    const isMobile = useMediaQuery("(max-width:900px)");
 
     // DÒNG LOG CHECK -> XÓA SAU
     // useEffect(() => {

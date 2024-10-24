@@ -1,8 +1,8 @@
 import { Box, Typography, styled } from "@mui/joy";
-import { MD_PADDING, chooseThemeValueIn, color } from "..";
-import { useLayoutEffect, useState } from "react";
+import { chooseThemeValueIn, color } from "..";
 
 import LinkTo from "@/components/link";
+import { memo } from "react";
 import { useGlobalContext } from "@/context/store";
 
 type PageLink = {
@@ -33,8 +33,8 @@ const bottomMenu: PageLink[] = [
         page: "tools",
         pos: 2,
         text: {
-            en: "Tools & Services",
-            vi: "Công cụ & Dịch vụ",
+            en: "Tools",
+            vi: "Dịch vụ",
         },
     },
     {
@@ -69,7 +69,7 @@ const bottomMenu: PageLink[] = [
     },
 ];
 
-export function BottomMenu() {
+function BottomMenu() {
     const { lang, systemMode } = useGlobalContext();
 
     return (
@@ -97,6 +97,8 @@ export function BottomMenu() {
     );
 }
 
+export default memo(BottomMenu);
+
 export const BOTTOMMENU_HEIGHT = 50;
 const BOTTOMMENU_PSEUDO_CLASS_WIDTH = 15;
 
@@ -112,21 +114,7 @@ const BottomMenuWrapper = styled(Box)(() => ({
 }));
 
 const BottomMenuContainer = styled(Box)(() => {
-    const [windowWidth, setWindowWidth] = useState(0);
-
-    useLayoutEffect(() => {
-        function handleResize() {
-            setWindowWidth(window.innerWidth);
-        }
-
-        window.addEventListener("resize", handleResize);
-        handleResize(); // Set initial window height
-
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
     const gap = 30;
-
     return {
         flexGrow: 1,
         height: "inherit",
@@ -136,7 +124,7 @@ const BottomMenuContainer = styled(Box)(() => {
         justifyContent: "center",
         gap: gap,
         "& > *": {
-            width: (windowWidth - gap * 4 - MD_PADDING * 4 - BOTTOMMENU_PSEUDO_CLASS_WIDTH * 4) / 5,
+            width: `calc(20% - ${gap * 2}px)`, // gap * 2 => Khoảng cách 2 bên -> mỗi bên 1 gap
             height: "inherit",
             background: color.white.lightSub,
             display: "flex",

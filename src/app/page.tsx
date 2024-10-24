@@ -1,50 +1,42 @@
 "use client";
 
-import { BOTTOMMENU_HEIGHT, BottomMenu, Header, MARGIN_HEADER, Main, Main_Container, chooseThemeValueIn, color } from "@/components";
+import { BOTTOMMENU_HEIGHT, Header, MARGIN_HEADER, Main, Main_Container, chooseThemeValueIn, color } from "@/components";
 import { Box, Typography } from "@mui/joy";
-import { Fragment, useLayoutEffect, useState } from "react";
 import { HomeEn, HomeVi } from "@/locales";
+import React, { Fragment } from "react";
 
 import { useGlobalContext } from "@/context/store";
+
+const BottomMenu = React.lazy(() => import("@/components/header/bottom-menu"));
 
 export default function Page() {
     const { lang, systemMode, isMobile } = useGlobalContext();
     const T = lang === "en" ? HomeEn.page : HomeVi.page;
-
-    const [windowHeight, setWindowHeight] = useState(0);
-
-    useLayoutEffect(() => {
-        function handleResize() {
-            setWindowHeight(window.innerHeight);
-        }
-
-        window.addEventListener("resize", handleResize);
-        handleResize(); // Set initial window height
-
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    const headText = {
+        title: isMobile ? T.title.xs : T.title.md,
+        description: isMobile ? T.description.xs : T.description.md,
+    };
 
     return (
         <Fragment>
             <Header />
             <Main>
-                <Main_Container sx={{ height: windowHeight - MARGIN_HEADER - (BOTTOMMENU_HEIGHT + 16 * 2) }}>
-                    <BottomMenu />
+                <Main_Container sx={{ height: `calc(100vh - ${MARGIN_HEADER}px - ${BOTTOMMENU_HEIGHT + 16 * 2}px)` }}>
+                    {!isMobile && <BottomMenu />}
                     <Box
                         sx={{
                             width: "100%",
-                            height: "80%",
+                            height: { xs: "60%", md: "80%" },
                             position: "relative",
-                            top: "50%",
+                            top: { xs: "40%", md: "50%" },
                             transform: "translateY(-50%)",
-                            // bgcolor: color.primary.main,
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
                             overflow: "hidden",
                             img: {
-                                width: { xs: "140%", md: "70%" },
-                                height: { xs: "100%", md: "70%" },
+                                width: { xs: "110%", sm: "100%" },
+                                height: { xs: "100%", sm: "70%" },
                                 objectFit: "contain",
                             },
                         }}
@@ -53,11 +45,11 @@ export default function Page() {
                         <Typography
                             textAlign={"center"}
                             level="h1"
-                            fontSize={isMobile ? "1.8rem" : "2.2rem"}
+                            sx={{ fontSize: { xs: "1.8rem", md: "2.2rem" } }}
                             textTransform={"capitalize"}
                             textColor={chooseThemeValueIn(color.black.dark, color.black.dark, systemMode)}
                         >
-                            {isMobile ? T.title.xs : T.title.md}
+                            {headText.title}
                         </Typography>
 
                         {/* DESCRIPTION - RESPONSIVE */}
@@ -67,10 +59,18 @@ export default function Page() {
                             textColor={chooseThemeValueIn(color.black.dark, color.black.dark, systemMode)}
                             sx={{ mt: 2, whiteSpace: "pre-wrap" }}
                         >
-                            {isMobile ? T.description.xs : T.description.md}
+                            {headText.description}
                         </Typography>
 
-                        <img src="/images/home-img.webp" title={T.title.xs} alt="home-img" width={"aotu"} height={"aotu"} draggable={false} />
+                        <img
+                            style={{ transition: "all 0.3s ease-in-out" }}
+                            src="/images/home-img.webp"
+                            title={T.title.xs}
+                            alt="home-img"
+                            width={"100%"}
+                            height={"100%"}
+                            draggable={false}
+                        />
                     </Box>
                 </Main_Container>
             </Main>

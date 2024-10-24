@@ -15,6 +15,25 @@ export const metadata: Metadata = {
     description: `SEE.ME - Điểm hẹn của cảm hứng và trải nghiệm, khám phá góc nhìn mới, kết nối với những tâm hồn đồng điệu trên hành trình khám phá bản thân.`,
     alternates: {
         canonical: "./",
+        languages: {
+            "vi-VN": "./",
+        },
+    },
+    robots: {
+        index: true,
+        follow: true,
+        nocache: false,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        googleBot: {
+            index: true,
+            follow: true,
+            noimageindex: false,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+        },
     },
 };
 

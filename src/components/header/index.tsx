@@ -17,7 +17,7 @@ type AnchorMenuPos = "left" | "right";
 const HOME_PAGE = process.env.NEXT_PUBLIC_HOME_PAGE;
 
 export function Header() {
-    const { systemMode } = useGlobalContext();
+    const { systemMode, isMobile } = useGlobalContext();
 
     const [openMenuState, setopenMenuState] = useState<Record<string, boolean>>({
         left: false,
@@ -80,7 +80,16 @@ export function Header() {
                     onClick={toggleDrawer("left", true)}
                 >
                     <Avatar size="sm" sx={{ bgcolor: chooseThemeValueIn(color.white.lightSub, color.white.main, systemMode) }}>
-                        <img title="7V - NGUYEN VU" alt="user-avatar" src={`${HOME_PAGE}/see.me-light.svg`} />
+                        {!isMobile && (
+                            <img
+                                title="7V - NGUYEN VU"
+                                alt="user-avatar"
+                                src={`${HOME_PAGE}/see.me-light.svg`}
+                                width={"100%"}
+                                height={"100%"}
+                                loading="lazy"
+                            />
+                        )}
                     </Avatar>
                 </Box>
                 <Box
@@ -119,6 +128,8 @@ export function Header() {
                             src={chooseThemeValueIn(`${HOME_PAGE}/see.me-text-light.svg`, `${HOME_PAGE}/see.me-text-dark.svg`, systemMode)}
                             title="SEE . ME"
                             alt="see.me-text-logo.svg"
+                            width={"100%"}
+                            height={"100%"}
                         />
                     </Box>
                 </LinkTo>
@@ -164,7 +175,16 @@ export function Header() {
                         }}
                     >
                         <Avatar size="sm" sx={{ bgcolor: chooseThemeValueIn(color.white.lightSub, color.white.main, systemMode) }}>
-                            <img title="7V - NGUYEN VU" alt="user-avatar" src={`${HOME_PAGE}/see.me-light.svg`} />
+                            {isMobile && (
+                                <img
+                                    title="7V - NGUYEN VU"
+                                    alt="user-avatar"
+                                    src={`${HOME_PAGE}/see.me-light.svg`}
+                                    width={"100%"}
+                                    height={"100%"}
+                                    loading="lazy"
+                                />
+                            )}
                         </Avatar>
                     </Box>
                 </Stack>
