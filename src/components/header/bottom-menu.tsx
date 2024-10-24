@@ -189,10 +189,10 @@ const BottomMenuContainer = styled(Box)(() => {
             },
         },
         "& > :nth-child(3)": {
-            background: color.primary.main,
+            background: color.primary.darkMedium,
             // color: color.primary.contrastText,
             "&::after, &::before": {
-                borderTop: `${BOTTOMMENU_HEIGHT}px solid ${color.primary.main}`,
+                borderTop: `${BOTTOMMENU_HEIGHT}px solid ${color.primary.darkMedium}`,
             },
             "&:hover": {
                 background: color.primary.dark,
