@@ -1,7 +1,18 @@
 "use client";
 
 import { Box, Button, Divider, LinearProgress, Stack, Tooltip, Typography } from "@mui/joy";
-import { Breadcrumb, FindImageLinksModal, Header, MARGIN_HEADER, Main, Main_Container, chooseThemeValueIn, color, isBase64Image } from "@/components";
+import {
+    Breadcrumb,
+    FindImageLinksModal,
+    Header,
+    ImageGeter_HelpDrawer,
+    MARGIN_HEADER,
+    Main,
+    Main_Container,
+    chooseThemeValueIn,
+    color,
+    isBase64Image,
+} from "@/components";
 import { Close, ContentCopy, CopyAll, Delete, Download, ErrorOutline, HighlightAlt, OpenInNew, Refresh } from "@mui/icons-material";
 import { ToolEn, ToolVi } from "@/locales";
 import { useEffect, useRef, useState } from "react";
@@ -580,13 +591,16 @@ export default function Page() {
                     <Breadcrumb currentText={{ text: T.name, url: pageSave.curr }} parentList={BreadcrumbParentTag} />
                     {/* BODY */}
                     <Box sx={{ width: { xs: "inherit", md: "80%", lg: "70%" }, my: 2, mx: "auto" }}>
-                        <Typography
-                            level="h1"
-                            textColor={chooseThemeValueIn(color.black.dark, color.black.dark, systemMode)}
-                            sx={{ bgcolor: "#", svg: { fontSize: "2rem" } }}
-                        >
-                            {isMobile ? T.page.title.xs : T.page.title.md}
-                        </Typography>
+                        <Stack direction={"row"} justifyContent={"space-between"} alignItems={"end"}>
+                            <Typography
+                                level="h1"
+                                textColor={chooseThemeValueIn(color.black.dark, color.black.dark, systemMode)}
+                                sx={{ bgcolor: "#", svg: { fontSize: "2rem" } }}
+                            >
+                                {isMobile ? T.page.title.xs : T.page.title.md}
+                            </Typography>
+                            <ImageGeter_HelpDrawer />
+                        </Stack>
 
                         <Grid container spacing={{ xs: 1, md: 2 }} sx={{ flexGrow: 1, pt: 4, pb: 1 }}>
                             {/* Nút tìm link ảnh */}
