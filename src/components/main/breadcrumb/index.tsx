@@ -55,7 +55,7 @@ export function Breadcrumb({ currentText, parentList }: Props) {
 
 const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
     const { lang } = useGlobalContext();
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const origin = process.env.NEXT_PUBLIC_HOME_PAGE;
 
     // SCHEMA.ORG - JSON-LD
     const schemaItemList: SchemaListItem[] | undefined = parentList?.map((item, index) => {
