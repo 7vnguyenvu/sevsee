@@ -14,7 +14,7 @@ const imageTopURL = {
 };
 
 export default function Page() {
-    const { lang } = useGlobalContext();
+    const { lang, pageSave } = useGlobalContext();
     const T = lang === "en" ? ToolEn : ToolVi;
 
     return (
@@ -34,7 +34,7 @@ export default function Page() {
                         }
                     />
                     {/* BREADCRUMB */}
-                    <Breadcrumb currentText={T.page.title.md} />
+                    <Breadcrumb currentText={{ text: T.page.title.md, url: pageSave.curr }} />
                     {/* BODY */}
                     <Grid container spacing={{ xs: 1, md: 1 }} sx={{ flexGrow: 1 }}>
                         {/* Image Geter */}

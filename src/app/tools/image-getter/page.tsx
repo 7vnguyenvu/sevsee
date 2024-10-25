@@ -20,8 +20,8 @@ interface URLErrorImage {
 const BreadcrumbParentTag = [
     {
         text: {
-            vi: "Công cụ & Dịch vụ",
-            en: "Tools & Services",
+            vi: "Dịch vụ",
+            en: "Tools",
         },
         url: "tools",
     },
@@ -54,7 +54,7 @@ function LinearProgressWithLabel({ text, progress }: { text: string; progress: n
 }
 
 export default function Page() {
-    const { lang, systemMode, isMobile } = useGlobalContext();
+    const { lang, systemMode, isMobile, pageSave } = useGlobalContext();
     const T = lang === "en" ? ToolEn.imageGetter : ToolVi.imageGetter;
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -577,7 +577,7 @@ export default function Page() {
             <Main>
                 <Main_Container>
                     {/* BREADCRUMB */}
-                    <Breadcrumb currentText={T.name} parentList={BreadcrumbParentTag} />
+                    <Breadcrumb currentText={{ text: T.name, url: pageSave.curr }} parentList={BreadcrumbParentTag} />
                     {/* BODY */}
                     <Box sx={{ width: { xs: "inherit", md: "80%", lg: "70%" }, my: 2, mx: "auto" }}>
                         <Typography
@@ -1001,7 +1001,7 @@ export default function Page() {
                                                             </Typography>
 
                                                             <Stack direction={"row"} alignItems={"center"} gap={1}>
-                                                                <Tooltip title={"Vị trí URL"} arrow size="sm" placement="bottom-end">
+                                                                <Tooltip title={T.page.urlPos} arrow size="sm" placement="bottom-end">
                                                                     <HighlightAlt
                                                                         onClick={() => handleHighlightErrorUrl(item.url, item.row)}
                                                                         sx={{
