@@ -55,6 +55,7 @@ export function Breadcrumb({ currentText, parentList }: Props) {
 
 const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
     const { lang } = useGlobalContext();
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
 
     // SCHEMA.ORG - JSON-LD
     const schemaItemList: SchemaListItem[] | undefined = parentList?.map((item, index) => {
@@ -62,7 +63,7 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
             "@type": "ListItem",
             position: index + 2,
             item: {
-                "@id": `${location.origin}/${item.url}`,
+                "@id": `${origin}/${item.url}`,
                 name: item.text[lang],
             },
         } as SchemaListItem;
@@ -77,7 +78,7 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
                       "@type": "ListItem",
                       position: 1,
                       item: {
-                          "@id": location.origin,
+                          "@id": origin,
                           name: "SEE.ME",
                       },
                   },
@@ -86,7 +87,7 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
                       "@type": "ListItem",
                       position: schemaItemList.length + 2,
                       item: {
-                          "@id": `${location.origin}/${currentText.url}`,
+                          "@id": `${origin}/${currentText.url}`,
                           name: currentText.text,
                       },
                   },
@@ -96,7 +97,7 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
                       "@type": "ListItem",
                       position: 1,
                       item: {
-                          "@id": location.origin,
+                          "@id": origin,
                           name: "SEE.ME",
                       },
                   },
@@ -104,7 +105,7 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
                       "@type": "ListItem",
                       position: 2,
                       item: {
-                          "@id": `${location.origin}/${currentText.url}`,
+                          "@id": `${origin}/${currentText.url}`,
                           name: currentText.text,
                       },
                   },
