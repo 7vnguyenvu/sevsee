@@ -1,40 +1,14 @@
+import { BreadcrumbTag, SchemaListItem, color } from "@/components";
 import { Breadcrumbs, Stack, Typography } from "@mui/joy";
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment, useMemo } from "react";
 
 import { HomeRounded } from "@mui/icons-material";
 import LinkTo from "@/components/link";
-import { color } from "@/components";
-import { useGlobalContext } from "@/context/store";
 
-export interface BreadcrumbParentTag {
-    text: {
-        vi: string;
-        en: string;
-    };
-    url: string;
-}
-
-export interface BreadcrumbCurrTag {
-    text: string;
-    url: string;
-}
-
-interface SchemaListItem {
-    "@type": string;
-    position: number;
-    item: { "@id": string; name: string };
-}
-
-interface Props {
-    currentText: BreadcrumbCurrTag;
-    parentList?: Array<BreadcrumbParentTag>;
-}
-
-export function Breadcrumb({ currentText, parentList }: Props) {
-    const { lang } = useGlobalContext();
+export function Breadcrumb({ current, parents }: BreadcrumbTag) {
     return (
         <Fragment>
-            <JSONLD__BREADCRUMB currentText={currentText} parentList={parentList} />
+            <JSONLD__BREADCRUMB current={current} parents={parents} />
             <Breadcrumbs separator="\" aria-label="breadcrumbs" sx={{ px: 0, fontWeight: "md", fontSize: { xs: "xs", sm: "sm" } }}>
                 <LinkTo url="/">
                     <Stack direction={"row"} gap={1} sx={{ alignItems: "center", color: color.primary.darkMedium }}>
@@ -42,19 +16,18 @@ export function Breadcrumb({ currentText, parentList }: Props) {
                         <Typography>SEE.ME</Typography>
                     </Stack>
                 </LinkTo>
-                {parentList?.map((item) => (
+                {parents?.map((item) => (
                     <LinkTo key={item.url} url={item.url} sx={{ color: color.secondary.dark }}>
-                        {item.text[lang]}
+                        {item.text}
                     </LinkTo>
                 ))}
-                <Typography sx={{ color: color.black.dark }}>{currentText.text}</Typography>
+                <Typography sx={{ color: color.black.dark }}>{current.text}</Typography>
             </Breadcrumbs>
         </Fragment>
     );
 }
 
-const JSONLD__BREADCRUMB = ({ currentText, parentList = [] }: Props) => {
-    const { lang } = useGlobalContext();
+const JSONLD__BREADCRUMB = ({ current, parents = [] }: BreadcrumbTag) => {
     const origin = process.env.NEXT_PUBLIC_HOME_PAGE;
 
     function cleanUrl(url: string) {
@@ -69,27 +42,28 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList = [] }: Props) => {
     };
 
     // Create schema item
-    const createSchemaItem = (position: number, url: string, name: string | Record<string, string>): SchemaListItem => ({
+    const createSchemaItem = (position: number, url: string, name: string): SchemaListItem => ({
         "@type": "ListItem",
         position,
         item: {
+            "@type": "Thing",
             "@id": buildFullUrl(url),
-            name: typeof name === "string" ? name : name[lang],
+            name: name,
         },
     });
 
     // Memoize the JSON-LD data
     const jsonLd = useMemo(() => {
         const homeItem = createSchemaItem(1, "", "SEE.ME");
-        const parentItems = parentList.map((item, index) => createSchemaItem(index + 2, item.url, item.text));
-        const currentItem = createSchemaItem(parentItems.length + 2, currentText.url, currentText.text);
+        const parentItems = parents.map((item, index) => createSchemaItem(index + 2, item.url, item.text));
+        const currentItem = createSchemaItem(parentItems.length + 2, current.url, current.text);
 
         return {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [homeItem, ...parentItems, currentItem],
         };
-    }, [parentList, currentText, lang, origin]);
+    }, [parents, current, origin]);
 
     return (
         <section>

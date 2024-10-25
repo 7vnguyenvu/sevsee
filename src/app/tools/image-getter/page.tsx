@@ -3,6 +3,7 @@
 import { Box, Button, Divider, LinearProgress, Stack, Tooltip, Typography } from "@mui/joy";
 import {
     Breadcrumb,
+    BreadcrumbTag,
     FindImageLinksModal,
     Header,
     ImageGeter_HelpDrawer,
@@ -28,15 +29,18 @@ interface URLErrorImage {
     errorType: string;
 }
 
-const BreadcrumbParentTag = [
-    {
-        text: {
-            vi: "Dịch vụ",
-            en: "Tools",
-        },
-        url: "tools",
+const breadcrumbTag: BreadcrumbTag = {
+    current: {
+        text: "Trình thu thập ảnh",
+        url: "tools/image-getter",
     },
-];
+    parents: [
+        {
+            text: "Dịch vụ",
+            url: "tools",
+        },
+    ],
+};
 
 // LinearProgressWithLabel function
 function LinearProgressWithLabel({ text, progress }: { text: string; progress: number }) {
@@ -65,7 +69,7 @@ function LinearProgressWithLabel({ text, progress }: { text: string; progress: n
 }
 
 export default function Page() {
-    const { lang, systemMode, isMobile, pageSave } = useGlobalContext();
+    const { lang, systemMode, isMobile } = useGlobalContext();
     const T = lang === "en" ? ToolEn.imageGetter : ToolVi.imageGetter;
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -588,7 +592,7 @@ export default function Page() {
             <Main>
                 <Main_Container>
                     {/* BREADCRUMB */}
-                    <Breadcrumb currentText={{ text: T.name, url: pageSave.curr }} parentList={BreadcrumbParentTag} />
+                    <Breadcrumb current={breadcrumbTag.current} parents={breadcrumbTag.parents} />
                     {/* BODY */}
                     <Box sx={{ width: { xs: "inherit", md: "80%", lg: "70%" }, my: 2, mx: "auto" }}>
                         <Stack direction={"row"} justifyContent={"space-between"} alignItems={"end"}>

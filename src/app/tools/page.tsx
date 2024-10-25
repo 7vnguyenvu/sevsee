@@ -1,6 +1,6 @@
 "use client";
 
-import { Breadcrumb, Header, ImageGetter_Tools, Main, Main_Container, TopPage, color } from "@/components";
+import { Breadcrumb, BreadcrumbTag, Header, ImageGetter_Tools, Main, Main_Container, TopPage, color } from "@/components";
 import { ToolEn, ToolVi } from "@/locales";
 
 import { FaToolbox } from "react-icons/fa";
@@ -13,8 +13,16 @@ const imageTopURL = {
     dark: "see.me-dark.svg",
 };
 
+const breadcrumbTag: BreadcrumbTag = {
+    current: {
+        text: "Dịch vụ",
+        url: "tools",
+    },
+    parents: [],
+};
+
 export default function Page() {
-    const { lang, pageSave } = useGlobalContext();
+    const { lang } = useGlobalContext();
     const T = lang === "en" ? ToolEn : ToolVi;
 
     return (
@@ -34,7 +42,7 @@ export default function Page() {
                         }
                     />
                     {/* BREADCRUMB */}
-                    <Breadcrumb currentText={{ text: T.page.title.md, url: pageSave.curr }} />
+                    <Breadcrumb current={breadcrumbTag.current} />
                     {/* BODY */}
                     <Grid container spacing={{ xs: 1, md: 1 }} sx={{ flexGrow: 1 }}>
                         {/* Image Geter */}

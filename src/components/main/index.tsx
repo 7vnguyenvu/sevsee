@@ -1,5 +1,5 @@
 import { Box, Theme, styled } from "@mui/joy";
-import { MARGIN_HEADER, MD_PADDING, XS_PADDING, chooseThemeValueIn, color } from "..";
+import { MARGIN_HEADER, MD_PADDING, XS_PADDING, color } from "..";
 
 import { SxProps } from "@mui/material";
 import { useGlobalContext } from "@/context/store";
@@ -7,6 +7,22 @@ import { useGlobalContext } from "@/context/store";
 export interface BreakpointProps {
     xs?: string;
     md?: string;
+}
+
+export interface BreadcrumbItem {
+    text: string;
+    url: string;
+}
+
+export interface BreadcrumbTag {
+    current: BreadcrumbItem;
+    parents?: Array<BreadcrumbItem>;
+}
+
+export interface SchemaListItem {
+    "@type": string;
+    position: number;
+    item: { "@type": string; "@id": string; name: string };
 }
 
 export * from "./top-page";
