@@ -57,13 +57,19 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
     const { lang } = useGlobalContext();
     const origin = process.env.NEXT_PUBLIC_HOME_PAGE;
 
+    function cleanUrl(url: string) {
+        // Thay thế nhiều dấu "/" liên tiếp bằng một dấu "/"
+        // nhưng giữ lại "//" sau "https:" hoặc "http:"
+        return url.replace(/([^:]\/)\/+/g, "$1");
+    }
+
     // SCHEMA.ORG - JSON-LD
     const schemaItemList: SchemaListItem[] | undefined = parentList?.map((item, index) => {
         return {
             "@type": "ListItem",
             position: index + 2,
             item: {
-                "@id": `${origin}/${item.url}`,
+                "@id": cleanUrl(origin + item.url),
                 name: item.text[lang],
             },
         } as SchemaListItem;
@@ -87,7 +93,7 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
                       "@type": "ListItem",
                       position: schemaItemList.length + 2,
                       item: {
-                          "@id": `${origin}/${currentText.url}`,
+                          "@id": cleanUrl(origin + currentText.url),
                           name: currentText.text,
                       },
                   },
@@ -105,7 +111,7 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
                       "@type": "ListItem",
                       position: 2,
                       item: {
-                          "@id": `${origin}/${currentText.url}`,
+                          "@id": cleanUrl(origin + currentText.url),
                           name: currentText.text,
                       },
                   },
