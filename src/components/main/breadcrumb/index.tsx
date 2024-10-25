@@ -1,5 +1,5 @@
 import { Breadcrumbs, Stack, Typography } from "@mui/joy";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useMemo } from "react";
 
 import { HomeRounded } from "@mui/icons-material";
 import LinkTo from "@/components/link";
@@ -53,7 +53,7 @@ export function Breadcrumb({ currentText, parentList }: Props) {
     );
 }
 
-const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
+const JSONLD__BREADCRUMB = ({ currentText, parentList = [] }: Props) => {
     const { lang } = useGlobalContext();
     const origin = process.env.NEXT_PUBLIC_HOME_PAGE;
 
@@ -63,64 +63,33 @@ const JSONLD__BREADCRUMB = ({ currentText, parentList }: Props) => {
         return url.replace(/([^:]\/)\/+/g, "$1");
     }
 
-    // SCHEMA.ORG - JSON-LD
-    const schemaItemList: SchemaListItem[] | undefined = parentList?.map((item, index) => {
-        return {
-            "@type": "ListItem",
-            position: index + 2,
-            item: {
-                "@id": cleanUrl(origin + item.url),
-                name: item.text[lang],
-            },
-        } as SchemaListItem;
-    });
-
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: !!schemaItemList
-            ? [
-                  {
-                      "@type": "ListItem",
-                      position: 1,
-                      item: {
-                          "@id": origin,
-                          name: "SEE.ME",
-                      },
-                  },
-                  ...schemaItemList,
-                  {
-                      "@type": "ListItem",
-                      position: schemaItemList.length + 2,
-                      item: {
-                          "@id": cleanUrl(origin + currentText.url),
-                          name: currentText.text,
-                      },
-                  },
-              ]
-            : [
-                  {
-                      "@type": "ListItem",
-                      position: 1,
-                      item: {
-                          "@id": origin,
-                          name: "SEE.ME",
-                      },
-                  },
-                  {
-                      "@type": "ListItem",
-                      position: 2,
-                      item: {
-                          "@id": cleanUrl(origin + currentText.url),
-                          name: currentText.text,
-                      },
-                  },
-              ],
+    // Build full URL with origin
+    const buildFullUrl = (path: string): string => {
+        return cleanUrl(`${origin}/${path}`);
     };
 
-    useEffect(() => {
-        console.log(jsonLd);
-    }, []);
+    // Create schema item
+    const createSchemaItem = (position: number, url: string, name: string | Record<string, string>): SchemaListItem => ({
+        "@type": "ListItem",
+        position,
+        item: {
+            "@id": buildFullUrl(url),
+            name: typeof name === "string" ? name : name[lang],
+        },
+    });
+
+    // Memoize the JSON-LD data
+    const jsonLd = useMemo(() => {
+        const homeItem = createSchemaItem(1, "", "SEE.ME");
+        const parentItems = parentList.map((item, index) => createSchemaItem(index + 2, item.url, item.text));
+        const currentItem = createSchemaItem(parentItems.length + 2, currentText.url, currentText.text);
+
+        return {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [homeItem, ...parentItems, currentItem],
+        };
+    }, [parentList, currentText, lang, origin]);
 
     return (
         <section>
