@@ -28,6 +28,8 @@ Chia sẻ các tính năng và dịch vụ hỗ trợ bạn trong công việc v
                 xs: `Danh sách URL`,
                 md: `Tải ảnh từ danh sách URL của bạn`,
             },
+            help: "Hướng dẫn & Trợ giúp",
+            helpSubtitle: "Những vấn đề bạn có thể gặp phải !!",
             labelDelay: "Thời gian chờ",
             textAreaPlaceholder: "Nhập danh sách URL ảnh, mỗi dòng là một URL",
             folderNameLabel: "Đặt tên cho file chứa",
@@ -52,6 +54,7 @@ Chia sẻ các tính năng và dịch vụ hỗ trợ bạn trong công việc v
             buttonDownloadAll: "Tải tất cả",
             showStart: "Kết quả ảnh đang hiển thị",
             showEnd: "Tất cả kết quả đã được hiển thị!",
+            urlPos: "Xem vị trí URL",
         },
         modal: {
             FindImageLinksModal: {

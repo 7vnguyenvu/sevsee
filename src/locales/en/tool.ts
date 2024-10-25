@@ -27,6 +27,8 @@ Share features and services to support you in your work and study most effective
                 xs: `Images URLs`,
                 md: `Download images from your URL list`,
             },
+            help: "Guide & Help",
+            helpSubtitle: "Problems you may encounter !!",
             labelDelay: "Time out",
             textAreaPlaceholder: "Enter a list of image URLs, one per line",
             folderNameLabel: "Name the container",
@@ -51,6 +53,7 @@ Share features and services to support you in your work and study most effective
             buttonDownloadAll: "Download all",
             showStart: "Results are showing",
             showEnd: "All results shown!",
+            urlPos: "View URL location",
         },
         modal: {
             FindImageLinksModal: {
