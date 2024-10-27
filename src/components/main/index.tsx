@@ -25,6 +25,7 @@ export interface SchemaListItem {
     item: { "@type": string; "@id": string; name: string };
 }
 
+export * from "./loading";
 export * from "./top-page";
 export * from "./breadcrumb";
 
