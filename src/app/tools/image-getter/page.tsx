@@ -630,9 +630,11 @@ export default function Page() {
 
                             <Grid item xs={12} md={12}>
                                 <Stack direction={"row"} alignItems={"center"} justifyContent={"end"} gap={1}>
-                                    <Typography level="body-sm" textColor="neutral.600">
-                                        {T.page.labelDelay} (3s → 10s):
-                                    </Typography>
+                                    <label>
+                                        <Typography level="body-sm" textColor="neutral.600">
+                                            {T.page.labelDelay} (3s → 10s):
+                                        </Typography>
+                                    </label>
                                     <input
                                         type="number"
                                         value={delayTimeout}
