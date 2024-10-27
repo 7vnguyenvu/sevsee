@@ -10,6 +10,12 @@ export async function generateMetadata(): Promise<Metadata> {
             template: "%s -- [ SEE . ME ]",
         },
         description: T.head.description,
+        alternates: {
+            canonical: process.env.HOME_CANONICAL + "/tools",
+            languages: {
+                vi: process.env.HOME_CANONICAL + "/tools",
+            },
+        },
     };
 }
 
