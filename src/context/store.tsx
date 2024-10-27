@@ -17,6 +17,7 @@ interface PageSave {
 
 interface ContextProps {
     isMobile: boolean;
+    isTablet: boolean;
     systemMode: "light" | "dark";
     lang: TypeLang;
     setLang: Dispatch<SetStateAction<TypeLang>>;
@@ -29,6 +30,7 @@ interface ContextProps {
 
 const GlobalContext = createContext<ContextProps>({
     isMobile: false,
+    isTablet: false,
     systemMode: "dark",
     lang: "vi",
     setLang: (): void => {},
@@ -70,7 +72,8 @@ export function GlobalContextProvider({ children }: { children: React.ReactNode 
         [pageSave]
     );
 
-    const isMobile = useMediaQuery("(max-width:900px)");
+    const isTablet = useMediaQuery("(max-width:900px)");
+    const isMobile = useMediaQuery("(max-width:600px)");
 
     // DÒNG LOG CHECK -> XÓA SAU
     // useEffect(() => {
@@ -80,6 +83,7 @@ export function GlobalContextProvider({ children }: { children: React.ReactNode 
 
     const context = {
         isMobile,
+        isTablet,
         systemMode,
         lang,
         setLang,

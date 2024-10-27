@@ -11,6 +11,10 @@ export interface BreakpointProps {
 
 export interface BreadcrumbItem {
     text: string;
+    page: {
+        vi: string;
+        en: string;
+    };
     url: string;
 }
 

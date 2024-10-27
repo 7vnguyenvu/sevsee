@@ -6,8 +6,8 @@ const defaultExport = {
     },
     page: {
         title: {
-            xs: `Tools`,
-            md: `Tools & Services`,
+            xs: `Services`,
+            md: `Services`,
         },
         description: {
             xs: `[ SEE . ME ]
@@ -15,6 +15,7 @@ Support you most effectively!`,
             md: `[ SEE . ME ] Tools
 Share features and services to support you in your work and study most effectively.`,
         },
+        showEnd: "More to come! Stay tuned!",
     },
     imageGetter: {
         name: "Image Getter",
@@ -24,7 +25,7 @@ Share features and services to support you in your work and study most effective
         },
         page: {
             title: {
-                xs: `Images URLs`,
+                xs: `Get by URLs`,
                 md: `Download images from your URL list`,
             },
             help: "Guide & Help",

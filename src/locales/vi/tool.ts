@@ -6,8 +6,8 @@ const defaultExport = {
     },
     page: {
         title: {
-            xs: `Công cụ`,
-            md: `Công cụ & Dịch vụ`,
+            xs: `Dịch vụ`,
+            md: `Dịch vụ`,
         },
         description: {
             xs: `[ SEE . ME ] Tools
@@ -15,6 +15,7 @@ Hỗ trợ bạn hiệu quả nhất!`,
             md: `Công cụ của [ SEE . ME ]
 Chia sẻ các tính năng và dịch vụ hỗ trợ bạn trong công việc và học tập hiệu quả nhất.`,
         },
+        showEnd: "Sẽ còn nhiều nữa! Hãy theo dõi nhé!",
     },
     imageGetter: {
         name: "Trình thu thập Ảnh",
@@ -25,7 +26,7 @@ Chia sẻ các tính năng và dịch vụ hỗ trợ bạn trong công việc v
         },
         page: {
             title: {
-                xs: `Danh sách URL`,
+                xs: `Tải ảnh từ URLs`,
                 md: `Tải ảnh từ danh sách URL của bạn`,
             },
             help: "Hướng dẫn & Trợ giúp",

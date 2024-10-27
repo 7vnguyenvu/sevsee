@@ -73,7 +73,7 @@ function BottomMenu() {
     const { lang, systemMode } = useGlobalContext();
 
     return (
-        <BottomMenuWrapper sx={{ display: { xs: "none", md: "flex" }, zIndex: 1299 }}>
+        <BottomMenuWrapper sx={{ display: { xs: "none", sm: "flex" }, zIndex: 1299 }}>
             <BottomMenuContainer>
                 {bottomMenu.map((item: PageLink, index: number) => (
                     <LinkTo key={index} url={item.page}>

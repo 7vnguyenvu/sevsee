@@ -1,7 +1,8 @@
-import { Avatar, Box, Drawer, ModalClose, Stack, Typography } from "@mui/joy";
+import { Avatar, Box, Drawer, ModalClose, Stack } from "@mui/joy";
 import { HEADER_HEIGHT, MD_PADDING, chooseThemeValueIn, color } from "..";
 import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Menu as MenuIcon } from "@mui/icons-material";
 
+import Image from "next/image";
 import Languages from "./language";
 import LinkTo from "../link";
 import { ListMenuLeft } from "./menu";
@@ -17,7 +18,7 @@ type AnchorMenuPos = "left" | "right";
 const HOME_PAGE = process.env.NEXT_PUBLIC_HOME_PAGE;
 
 export function Header() {
-    const { systemMode, isMobile } = useGlobalContext();
+    const { systemMode, isTablet } = useGlobalContext();
 
     const [openMenuState, setopenMenuState] = useState<Record<string, boolean>>({
         left: false,
@@ -80,16 +81,14 @@ export function Header() {
                     onClick={toggleDrawer("left", true)}
                 >
                     <Avatar size="sm" sx={{ bgcolor: chooseThemeValueIn(color.white.lightSub, color.white.main, systemMode) }}>
-                        {!isMobile && (
-                            <img
-                                title="7V - NGUYEN VU"
-                                alt="user-avatar"
-                                src={`${HOME_PAGE}/see.me-light.svg`}
-                                width={"100%"}
-                                height={"100%"}
-                                loading="lazy"
-                            />
-                        )}
+                        <Image
+                            title="7V - NGUYEN VU"
+                            alt="user-avatar"
+                            src={`${HOME_PAGE}/see.me-light.svg`}
+                            width={100}
+                            height={150}
+                            loading="lazy"
+                        />
                     </Avatar>
                 </Box>
                 <Box
@@ -167,7 +166,7 @@ export function Header() {
                     <Box
                         sx={{
                             img: {
-                                width: "auto",
+                                width: "90%",
                                 height: "90%",
                                 objectFit: "contain",
                                 borderRadius: `calc(infinity * 1px)`,
@@ -175,16 +174,14 @@ export function Header() {
                         }}
                     >
                         <Avatar size="sm" sx={{ bgcolor: chooseThemeValueIn(color.white.lightSub, color.white.main, systemMode) }}>
-                            {isMobile && (
-                                <img
-                                    title="7V - NGUYEN VU"
-                                    alt="user-avatar"
-                                    src={`${HOME_PAGE}/see.me-light.svg`}
-                                    width={"100%"}
-                                    height={"100%"}
-                                    loading="lazy"
-                                />
-                            )}
+                            <Image
+                                title="7V - NGUYEN VU"
+                                alt="user-avatar"
+                                src={`${HOME_PAGE}/see.me-light.svg`}
+                                width={100}
+                                height={150}
+                                loading="lazy"
+                            />
                         </Avatar>
                     </Box>
                 </Stack>

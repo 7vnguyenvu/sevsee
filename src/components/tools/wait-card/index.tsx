@@ -7,34 +7,34 @@ import { color } from "@/components";
 
 const text = {
     vi: {
-        title: "Image Getter Online",
-        sub: "Tải ảnh hàng loạt siêu nhanh",
+        title: "... ... ...",
+        sub: "___ ___ ___ ___ ___ ___",
         view_TooltipTitle: "Xem mô tả",
         image: {
-            src: "/images/img-getter-thumbnail.png",
+            src: "/images/home-img.webp",
             alt: "img-getter-thumbnail",
         },
         authorLable: "Tác giả",
-        author: "Nguyen Vu",
+        author: "... ...",
         usedLable: "Lượt dùng",
-        button: "Tới luôn",
+        button: "Tới liền!",
     },
     en: {
-        title: "Image Getter Online",
-        sub: "Super fast batch image download",
+        title: "... ... ...",
+        sub: "___ ___ ___ ___ ___ ___",
         view_TooltipTitle: "View description",
         image: {
-            src: "/images/img-getter-thumbnail.png",
+            src: "/images/home-img.webp",
             alt: "img-getter-thumbnail",
         },
         authorLable: "Author",
-        author: "Nguyen Vu",
+        author: "... ... ...",
         usedLable: "Used",
-        button: "Go now",
+        button: "Soon!",
     },
 };
 
-export function ImageGetter_Tools({ lang }: { lang: "en" | "vi" }) {
+export function Waiting_Tools({ lang }: { lang: "en" | "vi" }) {
     return (
         <Card
             sx={{
@@ -88,23 +88,22 @@ export function ImageGetter_Tools({ lang }: { lang: "en" | "vi" }) {
                         </Typography>
                         <Stack direction={"row"} gap={0.5} alignItems={"start"} sx={{ mt: 0.4 }}>
                             <BarChart sx={{ fontSize: { xs: "md", md: "xl" } }} />
-                            <Typography sx={{ fontSize: { xs: "xs", md: "sm" }, fontWeight: "lg" }}>7M+ {text[lang].usedLable}</Typography>
+                            <Typography sx={{ fontSize: { xs: "xs", md: "sm" }, fontWeight: "lg" }}>? {text[lang].usedLable}</Typography>
                         </Stack>
                     </div>
-                    <LinkTo url="tools/image-getter" sx={{ fontWeight: 600 }}>
-                        <Button
-                            variant="solid"
-                            size="sm"
-                            sx={{
-                                width: "fit-content",
-                                bgcolor: color.pink_Of_Nhi.main,
-                                color: color.black.dark,
-                                px: 0.75,
-                            }}
-                        >
-                            {text[lang].button}
-                        </Button>
-                    </LinkTo>
+                    <Button
+                        disabled
+                        variant="solid"
+                        size="sm"
+                        sx={{
+                            width: "fit-content",
+                            bgcolor: color.pink_Of_Nhi.main,
+                            color: color.black.dark,
+                            px: 1,
+                        }}
+                    >
+                        {text[lang].button}
+                    </Button>
                 </Box>
             </CardContent>
         </Card>

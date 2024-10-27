@@ -4,14 +4,14 @@ const defaultExport = {
     },
     page: {
         title: {
-            xs: `Have a nice day 😊`,
+            xs: `Have a nice day 😉`,
             md: `How are you today? 🫡`,
         },
         description: {
             xs: `A place for inspiration and experience
 On a journey of self-discovery`,
-            md: `A meeting place for inspiration and experience, discovering new perspectives
-Connecting with like-minded souls on a journey of self-discovery`,
+            md: `This is the meeting place of inspiration and experience
+A journey to discover new perspectives is waiting for you!`,
         },
     },
 };

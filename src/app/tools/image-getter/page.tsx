@@ -32,11 +32,19 @@ interface URLErrorImage {
 const breadcrumbTag: BreadcrumbTag = {
     current: {
         text: "Trình thu thập ảnh",
+        page: {
+            vi: "Trình thu thập ảnh",
+            en: "Image getter online",
+        },
         url: "tools/image-getter",
     },
     parents: [
         {
             text: "Dịch vụ",
+            page: {
+                vi: "Dịch vụ",
+                en: "Services",
+            },
             url: "tools",
         },
     ],
@@ -383,6 +391,7 @@ export default function Page() {
 
     const handleClearContent = () => {
         setImageURLs("");
+        setDelayTimeout(5);
         handleClearWithoutURLs();
     };
 
@@ -606,41 +615,64 @@ export default function Page() {
                             <ImageGeter_HelpDrawer />
                         </Stack>
 
-                        <Grid container spacing={{ xs: 1, md: 2 }} sx={{ flexGrow: 1, pt: 4, pb: 1 }}>
+                        <Grid container spacing={{ xs: 1, md: 2 }} sx={{ flexGrow: 1, pt: 2, pb: 1 }}>
                             {/* Nút tìm link ảnh */}
                             <Grid item xs={12} md={12}>
-                                <Stack direction={"row"} justifyContent={"space-between"}>
+                                <Stack direction={"row"} alignItems={"center"} justifyContent={"space-between"} gap={1}>
                                     <FindImageLinksModal setImageURLs={setImageURLs} />
-                                    <Button
-                                        onClick={() => {
-                                            setReloadImageURLs(true);
-                                            loadURLs();
-                                        }}
-                                        color="primary"
-                                        disabled={reloadImageURLs}
-                                        loading={reloadImageURLs}
-                                    >
-                                        <Stack direction={"row"} gap={1} alignItems={"center"} justifyContent={"center"}>
-                                            <Refresh />
-                                            {!isMobile && T.page.buttonReload}
-                                        </Stack>
-                                    </Button>
+                                    <Stack direction={"row"} alignItems={"center"} justifyContent={"end"} gap={1}>
+                                        <Button
+                                            onClick={() => {
+                                                setReloadImageURLs(true);
+                                                loadURLs();
+                                            }}
+                                            color="primary"
+                                            disabled={reloadImageURLs}
+                                            loading={reloadImageURLs}
+                                        >
+                                            <Stack direction={"row"} gap={1} alignItems={"center"} justifyContent={"center"}>
+                                                <Refresh />
+                                                <Typography
+                                                    sx={{
+                                                        fontWeight: 600,
+                                                        fontSize: "14px",
+                                                        color: color.white.main,
+                                                        display: { xs: "none", sm: "block" },
+                                                    }}
+                                                >
+                                                    {!isMobile && T.page.buttonReload}
+                                                </Typography>
+                                            </Stack>
+                                        </Button>
+                                    </Stack>
                                 </Stack>
                             </Grid>
 
                             <Grid item xs={12} md={12}>
-                                <Stack direction={"row"} alignItems={"center"} justifyContent={"end"} gap={1}>
+                                <Stack direction={"row"} alignItems={"center"} justifyContent={"end"} gap={0.5}>
                                     <label>
-                                        <Typography level="body-sm" textColor="neutral.600">
+                                        <Typography level="body-sm" textColor="neutral.600" sx={{ display: { xs: "block", sm: "block" } }}>
                                             {T.page.labelDelay} (3s → 10s):
                                         </Typography>
                                     </label>
                                     <input
-                                        type="number"
+                                        type="text"
                                         value={delayTimeout}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDelayTimeout(+e.target.value)}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            const value = e.target.value;
+                                            if (/^\d+$/.test(value)) {
+                                                if (+value < 3) {
+                                                    setDelayTimeout(3);
+                                                } else if (+value > 10) {
+                                                    setDelayTimeout(10);
+                                                } else if (+value >= 3 && +value <= 10) {
+                                                    setDelayTimeout(+value);
+                                                }
+                                            }
+                                        }}
                                         min={3}
                                         max={10}
+                                        style={{ width: "1rem", textAlign: "center" }}
                                     />
                                     <Typography level="body-sm" textColor="neutral.600">
                                         (s)
@@ -652,13 +684,13 @@ export default function Page() {
                                     onChange={(e) => {
                                         setImageURLs(e.target.value);
                                     }}
-                                    rows={20}
+                                    rows={19}
                                     placeholder={T.page.textAreaPlaceholder}
                                     style={{
                                         width: "100%",
                                         minHeight: "172px",
                                         padding: "10px",
-                                        margin: "10px 0",
+                                        margin: "6px 0",
                                         border: "1px solid #ddd",
                                         borderRadius: "4px",
                                         boxSizing: "border-box" as const,
@@ -752,7 +784,7 @@ export default function Page() {
                                                                             <CopyAll
                                                                                 onClick={() => {
                                                                                     let urls = "";
-                                                                                    groupedErrors[errorType].forEach(({ url, index }, mapIndex) => {
+                                                                                    groupedErrors[errorType].forEach(({ url, index }) => {
                                                                                         urls += `${url}\n`;
                                                                                     });
 
@@ -805,7 +837,7 @@ export default function Page() {
                                                                                                 level="title-sm"
                                                                                             >
                                                                                                 {`${url.substring(0, length)} ${
-                                                                                                    url.length > length && "[...]"
+                                                                                                    url.length > length ? "[...]" : ""
                                                                                                 }`}
                                                                                             </Typography>
                                                                                         </Stack>

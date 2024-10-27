@@ -4,8 +4,10 @@ import { Fragment, useMemo } from "react";
 
 import { HomeRounded } from "@mui/icons-material";
 import LinkTo from "@/components/link";
+import { useGlobalContext } from "@/context/store";
 
 export function Breadcrumb({ current, parents }: BreadcrumbTag) {
+    const { lang } = useGlobalContext();
     return (
         <Fragment>
             <JSONLD__BREADCRUMB current={current} parents={parents} />
@@ -18,10 +20,10 @@ export function Breadcrumb({ current, parents }: BreadcrumbTag) {
                 </LinkTo>
                 {parents?.map((item) => (
                     <LinkTo key={item.url} url={item.url} sx={{ color: color.secondary.dark }}>
-                        {item.text}
+                        {item.page[lang]}
                     </LinkTo>
                 ))}
-                <Typography sx={{ color: color.black.dark }}>{current.text}</Typography>
+                <Typography sx={{ color: color.black.dark }}>{current.page[lang]}</Typography>
             </Breadcrumbs>
         </Fragment>
     );

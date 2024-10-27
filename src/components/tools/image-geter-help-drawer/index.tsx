@@ -9,7 +9,7 @@ import { chooseThemeValueIn, color } from "@/components";
 import { useGlobalContext } from "@/context/store";
 
 export function ImageGeter_HelpDrawer() {
-    const { lang, systemMode, isMobile } = useGlobalContext();
+    const { lang, systemMode, isTablet } = useGlobalContext();
     const T = lang === "en" ? ToolEn.imageGetter : ToolVi.imageGetter;
 
     const headRef = React.useRef<HTMLUListElement>(null);
@@ -44,7 +44,7 @@ export function ImageGeter_HelpDrawer() {
                 arrow
                 size="sm"
                 placement="left"
-                open={!isMobile && !open}
+                open={!isTablet}
             >
                 <ContactSupport
                     onClick={toggleDrawer(true)}

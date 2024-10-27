@@ -7,7 +7,7 @@ const defaultExport = {
     page: {
         title: {
             xs: "Bài viết",
-            md: "Bài viết & Nhật ký",
+            md: "Bài viết",
         },
         description: {
             xs: `[ SEE . ME ]
