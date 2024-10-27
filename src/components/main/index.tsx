@@ -53,3 +53,17 @@ export const Main_Container = ({ children, sx }: { children: React.ReactNode; sx
         </Box>
     );
 };
+
+export const ContainerContentText = styled(Box)({
+    whiteSpace: "pre-wrap",
+    wordBreak: "break-word",
+    textAlign: "justify",
+    "& p": { marginTop: "0.5em" },
+    "& img": { height: "auto", objectFit: "contain", borderRadius: "8px", userSelect: "none" },
+    "& a": { color: color.primary.main, textDecoration: "none" },
+    "& h3 + p": { marginTop: 0 },
+});
+
+export const TextAlignLeft = styled(Box)({
+    textAlign: "left",
+});

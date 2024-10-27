@@ -1,30 +1,18 @@
 import * as React from "react";
 
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionGroup,
-    AccordionSummary,
-    Box,
-    Divider,
-    Drawer,
-    List,
-    ListItem,
-    ModalClose,
-    Stack,
-    Tooltip,
-    Typography,
-} from "@mui/joy";
+import { AccordionGroup, Box, Drawer, List, ListItem, ModalClose, Stack, Tooltip, Typography } from "@mui/joy";
 import { AutoStories, ContactSupport } from "@mui/icons-material";
+import { ImgGetter__DomainErr, ImgGetter__TimeOutErr, ImgGetter__Usage } from "./guide";
 import { ToolEn, ToolVi } from "@/locales";
+import { chooseThemeValueIn, color } from "@/components";
 
-import { color } from "@/components";
 import { useGlobalContext } from "@/context/store";
 
 export function ImageGeter_HelpDrawer() {
-    const { lang, isMobile } = useGlobalContext();
+    const { lang, systemMode, isMobile } = useGlobalContext();
     const T = lang === "en" ? ToolEn.imageGetter : ToolVi.imageGetter;
 
+    const headRef = React.useRef<HTMLUListElement>(null);
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (inOpen: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -74,10 +62,37 @@ export function ImageGeter_HelpDrawer() {
                 />
             </Tooltip>
             <Drawer open={open} onClose={toggleDrawer(false)} anchor={"left"}>
-                <ModalClose />
-                <Box role="presentation">
-                    <List>
-                        <ListItem sx={{}}>
+                <Box
+                    role="presentation"
+                    sx={{
+                        position: "relative",
+                        overflow: "overlay",
+                        "&::-webkit-scrollbar": {
+                            borderRadius: 4,
+                            width: 3,
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                            borderRadius: 4,
+                            backgroundColor: color.white.main,
+                        },
+                        "&::-webkit-scrollbar-track": {
+                            borderRadius: 4,
+                            backgroundColor: color.white.sub,
+                        },
+                    }}
+                >
+                    <List
+                        ref={headRef}
+                        sx={{
+                            position: "sticky",
+                            top: 0,
+                            zIndex: 2,
+                            bgcolor: chooseThemeValueIn(color.white.main, "#0c0d0f", systemMode),
+                            borderBottom: `thin ${color.tooltip.dark} solid`,
+                        }}
+                    >
+                        <ModalClose />
+                        <ListItem>
                             <Stack
                                 direction={"row"}
                                 gap={2}
@@ -99,36 +114,30 @@ export function ImageGeter_HelpDrawer() {
                                     }}
                                 />
                                 <Stack>
-                                    <Typography sx={{ fontWeight: "bold", fontSize: { md: "md", lg: "xl" } }}>{T.page.help}</Typography>
-                                    <Typography sx={{ fontSize: { xs: ".7rem", lg: "sm" } }}>{T.page.helpSubtitle}</Typography>
+                                    <Typography sx={{ fontWeight: "bold", fontSize: { xs: "md", lg: "xl" } }}>{T.page.help}</Typography>
+                                    <Typography sx={{ fontSize: { xs: ".65rem", lg: "sm" } }}>{T.page.helpSubtitle}</Typography>
                                 </Stack>
                             </Stack>
                         </ListItem>
                     </List>
-                    <Divider />
-                    {/* <AccordionGroup size={"sm"}>
-                        <Accordion>
-                            <AccordionSummary>First accordion</AccordionSummary>
-                            <AccordionDetails>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                aliqua.
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion>
-                            <AccordionSummary>Second accordion</AccordionSummary>
-                            <AccordionDetails>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                aliqua.
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion>
-                            <AccordionSummary>Third accordion</AccordionSummary>
-                            <AccordionDetails>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                aliqua.
-                            </AccordionDetails>
-                        </Accordion>
-                    </AccordionGroup> */}
+                    <AccordionGroup
+                        size={"sm"}
+                        sx={{
+                            position: "relative",
+                            h2: { px: 1, py: 1.4, fontSize: "1rem" },
+                            h3: { py: 1.4, fontSize: "1rem", color: color.secondary.main },
+                            ".MuiAccordionSummary-root": {
+                                position: "sticky",
+                                top: headRef.current?.offsetHeight,
+                                zIndex: 1,
+                                bgcolor: chooseThemeValueIn(color.white.main, "#0c0d0f", systemMode),
+                            },
+                        }}
+                    >
+                        <ImgGetter__Usage />
+                        {/* <ImgGetter__TimeOutErr />
+                        <ImgGetter__DomainErr /> */}
+                    </AccordionGroup>
                 </Box>
             </Drawer>
         </Box>
