@@ -128,7 +128,7 @@ export function ImageGeter_HelpDrawer() {
                             h3: { py: 1.4, fontSize: "1rem", color: color.secondary.main },
                             ".MuiAccordionSummary-root": {
                                 position: "sticky",
-                                top: headRef.current?.offsetHeight,
+                                top: `calc(${headRef.current?.offsetHeight}px - 1px)`,
                                 zIndex: 1,
                                 bgcolor: chooseThemeValueIn(color.white.main, "#0c0d0f", systemMode),
                             },
