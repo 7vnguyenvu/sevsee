@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
         },
         description: T.head.description,
         alternates: {
-            canonical: process.env.HOME_CANONICAL + "/tools",
+            canonical: process.env.HOME_CANONICAL + "tools",
             languages: {
-                vi: process.env.HOME_CANONICAL + "/tools",
+                vi: process.env.HOME_CANONICAL + "tools",
             },
         },
     };

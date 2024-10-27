@@ -8,9 +8,9 @@ export async function generateMetadata(): Promise<Metadata> {
         title: T.head.title,
         description: T.head.description,
         alternates: {
-            canonical: process.env.HOME_CANONICAL + "/tools/image-getter",
+            canonical: process.env.HOME_CANONICAL + "tools/image-getter",
             languages: {
-                vi: process.env.HOME_CANONICAL + "/tools/image-getter",
+                vi: process.env.HOME_CANONICAL + "tools/image-getter",
             },
         },
     };
