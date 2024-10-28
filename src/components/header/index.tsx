@@ -12,6 +12,7 @@ import { useGlobalContext } from "@/context/store";
 import { useState } from "react";
 
 export * from "./bottom-menu";
+export * from "./bottom-menu-mobile";
 
 type AnchorMenuPos = "left" | "right";
 

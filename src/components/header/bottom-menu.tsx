@@ -5,7 +5,7 @@ import LinkTo from "@/components/link";
 import { memo } from "react";
 import { useGlobalContext } from "@/context/store";
 
-type PageLink = {
+export type PageLink = {
     child: Array<PageLink>;
     hiden: boolean;
     page: string;
@@ -78,6 +78,7 @@ function BottomMenu() {
                 {bottomMenu.map((item: PageLink, index: number) => (
                     <LinkTo key={index} url={item.page}>
                         <Typography
+                            level="h2"
                             sx={{
                                 fontSize: "1rem",
                                 fontWeight: "bold",
