@@ -12,7 +12,12 @@ const LinkTo = ({ url, sx, children }: Props) => {
     const { handleClickLinkTo } = useGlobalContext();
 
     return (
-        <Link onClick={() => handleClickLinkTo(url)} href={`/${url}`} style={{ textDecoration: "none", ...sx }}>
+        <Link
+            onClick={() => handleClickLinkTo(url)}
+            href={`/${url}`}
+            style={{ textDecoration: "none", ...sx }}
+            aria-label={"SEVSEE - SEE.ME Welcome!"}
+        >
             {children}
         </Link>
     );

@@ -9,9 +9,10 @@ import Image from "next/image";
 import { useGlobalContext } from "@/context/store";
 
 const BottomMenu = React.lazy(() => import("@/components/header/bottom-menu"));
+const BottomMenuMoblie = React.lazy(() => import("@/components/header/bottom-menu-mobile"));
 
 export default function Page() {
-    const { lang, systemMode, isMobile } = useGlobalContext();
+    const { lang, systemMode } = useGlobalContext();
     const T = lang === "en" ? HomeEn.page : HomeVi.page;
 
     return (
@@ -24,7 +25,6 @@ export default function Page() {
                         height: `calc(100vh - ${MARGIN_HEADER}px - ${BOTTOMMENU_HEIGHT + 16 * 2}px)`,
                     }}
                 >
-                    {!isMobile && <BottomMenu />}
                     <Box
                         sx={{
                             width: "100%",
@@ -81,6 +81,8 @@ export default function Page() {
                             />
                         </Box>
                     </Box>
+                    <BottomMenu />
+                    <BottomMenuMoblie />
                 </Main_Container>
             </Main>
         </Fragment>
