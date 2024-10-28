@@ -682,7 +682,7 @@ export default function Page() {
                                     ref={textareaRef}
                                     value={imageURLs}
                                     onChange={(e) => {
-                                        setImageURLs(e.target.value);
+                                        setImageURLs(e.target.value.replace(/^\s*$(?:\r\n?|\n)/gm, ""));
                                     }}
                                     rows={19}
                                     placeholder={T.page.textAreaPlaceholder}

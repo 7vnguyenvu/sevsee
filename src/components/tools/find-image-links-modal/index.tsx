@@ -18,7 +18,7 @@ export function FindImageLinksModal({ setImageURLs }: { setImageURLs: (urls: str
         const links = await findImageLinks(inputText);
 
         if (links && links.length > 0) {
-            setImageURLs(links.join("\n"));
+            setImageURLs(links.join("\n").replace(/^\s*$(?:\r\n?|\n)/gm, ""));
             setError(null);
             setOpen(false);
         } else {
