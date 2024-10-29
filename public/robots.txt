@@ -1,4 +1,0 @@
-User-Agent: *
-Disallow: /_next/static/chunks/*
-Disallow: /_next/static/css/*
-Disallow: /check
