@@ -88,11 +88,12 @@ const BottomMenuContainer = styled(Box)(() => ({
 }));
 
 const BottomMenuItem = styled(Box)(() => ({
+    flex: 0.9,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     fontSize: "14px",
-    padding: "4px 12px",
+    padding: "4px 0px",
 }));
 
 const ItemColumnCenter = styled(Box)(() => ({
