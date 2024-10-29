@@ -1,56 +1,47 @@
 import { BOTTOMMENU_HEIGHT, chooseThemeValueIn, color } from "@/components";
-import { Box, styled } from "@mui/joy";
-import {
-    CategoryOutlined,
-    HistoryEduRounded,
-    HomeRepairServiceOutlined,
-    HomeRounded,
-    SportsEsportsOutlined,
-    VisibilityRounded,
-} from "@mui/icons-material";
-import React, { memo } from "react";
+import { Box, Typography, styled } from "@mui/joy";
+import { HomeRounded, VisibilityRounded } from "@mui/icons-material";
+import { PiBoundingBoxLight, PiGameControllerLight, PiToolboxLight } from "react-icons/pi";
 
 import LinkTo from "@/components/link";
+import { RiQuillPenLine } from "react-icons/ri";
+import { memo } from "react";
 import { useGlobalContext } from "@/context/store";
 
 const iconMap = {
     HomeRounded: <HomeRounded />,
-    HomeRepairServiceOutlined: <HomeRepairServiceOutlined />,
-    HistoryEduRounded: <HistoryEduRounded />,
-    SportsEsportsOutlined: <SportsEsportsOutlined />,
-    CategoryOutlined: <CategoryOutlined />,
+    PiToolboxLight: <PiToolboxLight />,
+    RiQuillPenLine: <RiQuillPenLine />,
+    PiGameControllerLight: <PiGameControllerLight />,
+    PiBoundingBoxLight: <PiBoundingBoxLight />,
     VisibilityRounded: <VisibilityRounded />,
 };
 
 const bottomMenuLeft = [
-    { _id: "lu1", url: "blogs", name: { en: "Blogs & Diaries", vi: "Bài viết & Nhật ký" }, icon: iconMap["HistoryEduRounded"] },
-    { _id: "lu2", url: "tools", name: { en: "Tools & Services", vi: "Công cụ & Dịch vụ" }, icon: iconMap["HomeRepairServiceOutlined"] },
+    { _id: "lu1", url: "blogs", name: { en: "Blogs", vi: "Bài viết" }, icon: iconMap["RiQuillPenLine"] },
+    { _id: "lu2", url: "tools", name: { en: "Tools", vi: "Dịch vụ" }, icon: iconMap["PiToolboxLight"] },
 ];
-
-const bottomMenuCenter = {
-    _id: "lu3",
-    url: "",
-    name: { en: "SEE.ME", vi: "SEE.ME" },
-    icon: iconMap["HomeRounded"],
-};
-
+const bottomMenuCenter = { _id: "lu3", url: "", name: { en: "SEE.ME", vi: "SEE.ME" }, icon: iconMap["HomeRounded"] };
 const bottomMenuRight = [
-    { _id: "lu4", url: "entertainments", name: { en: "Entertainment", vi: "Giải trí" }, icon: iconMap["SportsEsportsOutlined"] },
-    { _id: "lu5", url: "projects", name: { en: "Projects & Sketches", vi: "Dự án & Phác thảo" }, icon: iconMap["CategoryOutlined"] },
+    { _id: "lu4", url: "entertainments", name: { en: "Games", vi: "Giải trí" }, icon: iconMap["PiGameControllerLight"] },
+    { _id: "lu5", url: "projects", name: { en: "Projects", vi: "Dự án" }, icon: iconMap["PiBoundingBoxLight"] },
 ];
 
 const BottomMenuMobile = () => {
-    const { systemMode } = useGlobalContext();
+    const { lang, systemMode } = useGlobalContext();
     const bgColor = chooseThemeValueIn(color.white.cream, color.black.dark, systemMode);
     const iconColor = chooseThemeValueIn(color.black.main, color.white.main, systemMode);
 
     return (
         <BottomMenuArea sx={{ bgcolor: bgColor, display: { xs: "flex", sm: "none" }, zIndex: 1299 }}>
-            <BottomMenuContainer>
+            <BottomMenuContainer sx={{ px: 1 }}>
                 {bottomMenuLeft.map((link) => (
                     <BottomMenuItem key={link._id} sx={{ "*": { color: iconColor } }}>
                         <LinkTo url={link.url} sx={{ textDecoration: "none", width: "100%" }}>
-                            {link.icon}
+                            <ItemColumnCenter sx={{ gap: 0.2, svg: { fontSize: "1.2rem" } }}>
+                                {link.icon}
+                                <Typography sx={{ fontSize: "0.7rem" }}>{link.name[lang]}</Typography>
+                            </ItemColumnCenter>
                         </LinkTo>
                     </BottomMenuItem>
                 ))}
@@ -62,7 +53,10 @@ const BottomMenuMobile = () => {
                 {bottomMenuRight.map((link) => (
                     <BottomMenuItem key={link._id} sx={{ "*": { color: iconColor } }}>
                         <LinkTo url={link.url} sx={{ textDecoration: "none", width: "100%" }}>
-                            {link.icon}
+                            <ItemColumnCenter sx={{ gap: 0.2, svg: { fontSize: "1.2rem" } }}>
+                                {link.icon}
+                                <Typography sx={{ fontSize: "0.7rem" }}>{link.name[lang]}</Typography>
+                            </ItemColumnCenter>
                         </LinkTo>
                     </BottomMenuItem>
                 ))}
@@ -99,6 +93,12 @@ const BottomMenuItem = styled(Box)(() => ({
     alignItems: "center",
     fontSize: "14px",
     padding: "4px 12px",
+}));
+
+const ItemColumnCenter = styled(Box)(() => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
 }));
 
 const BottomMenuItemFeature = styled(Box)(() => ({
