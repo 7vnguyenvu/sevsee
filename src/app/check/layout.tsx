@@ -12,7 +12,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     return {
         title: T.head.title,
-        description: `Kiểm toán chất lượng trạng thái và các thông tin khác của UI -> Hướng đến trải nghiệm tốt nhất.`,
+        description: T.head.description,
+        alternates: {
+            canonical: process.env.HOME_CANONICAL + "check",
+            languages: {
+                vi: process.env.HOME_CANONICAL + "check",
+            },
+        },
     };
 }
 

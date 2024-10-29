@@ -16,6 +16,21 @@ export default function Home() {
     // const { mode } = useColorScheme();
     const systemMode = useSystemColorMode();
 
+    const currTheme = {
+        dark: {
+            vi: "Tối",
+            en: "Dark",
+        },
+        light: {
+            vi: "Sáng",
+            en: "Light",
+        },
+    };
+    const currLanguages = {
+        vi: "Việt Nam",
+        en: "English",
+    };
+
     // /* Handle Hydration */ {
     //     const [mounted, setMounted] = useState(false);
 
@@ -35,13 +50,12 @@ export default function Home() {
                 <Main_Container>
                     {/* <h1>Chế độ hiện tại [mode]: {mode}</h1> */}
                     <h1>
-                        {T.page.systemMode} [systemMode]: {systemMode}
+                        {T.page.systemMode}: {currTheme[systemMode][lang]}
                     </h1>
-                    <h4>{T.page.note_AutoChange}</h4>
                     <hr style={{ borderTop: "1px dashed #ccc" }} />
-                    <p>
-                        {T.page.languageSelected} [lang]: {lang}
-                    </p>
+                    <h2 style={{ fontSize: "1rem", fontWeight: "normal", color: "#777", margin: 0 }}>
+                        {T.page.languageSelected}: {currLanguages[lang]}
+                    </h2>
                 </Main_Container>
             </Main>
         </div>
