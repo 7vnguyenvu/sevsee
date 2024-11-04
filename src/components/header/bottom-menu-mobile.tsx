@@ -27,18 +27,43 @@ const bottomMenuRight = [
     { _id: "lu5", url: "projects", name: { en: "Projects", vi: "Dự án" }, icon: iconMap["PiBoundingBoxLight"] },
 ];
 
-const BottomMenuMobile = () => {
+interface Props {
+    display?: { xs: string; sm: string };
+    direction?: "row" | "column"; // Thêm prop direction
+}
+
+const BottomMenuMobile = ({ display, direction = "row" }: Props) => {
+    // Đặt default là "column"
     const { lang, systemMode } = useGlobalContext();
     const bgColor = chooseThemeValueIn(color.white.cream, color.black.dark, systemMode);
     const iconColor = chooseThemeValueIn(color.black.main, color.white.main, systemMode);
 
     return (
-        <BottomMenuArea sx={{ bgcolor: bgColor, display: { xs: "flex", sm: "none" }, zIndex: 1299 }}>
-            <BottomMenuContainer sx={{ px: 1 }}>
+        <BottomMenuArea
+            sx={{
+                bgcolor: bgColor,
+                display: display || { xs: "flex", sm: "none" },
+                zIndex: 1299,
+                width: direction === "column" ? "60px" : "85%", // Điều chỉnh width cho cột
+                height: direction === "column" ? "350px" : BOTTOMMENU_HEIGHT, // Điều chỉnh height cho cột
+                bottom: direction === "column" ? ".75rem" : "25px", // Đưa về bên phải nếu là cột
+                right: direction === "column" ? ".75rem" : "auto", // Đưa về bên phải nếu là cột
+                left: direction === "column" ? "auto" : "50%",
+                transform: direction === "column" ? "none" : "translateX(-50%)",
+                py: direction === "column" ? 2 : 0,
+            }}
+        >
+            <BottomMenuContainer
+                sx={{
+                    px: direction === "column" ? 0 : 1,
+                    flexDirection: direction,
+                    gap: direction === "column" ? 1 : 0,
+                }}
+            >
                 {bottomMenuLeft.map((link) => (
                     <BottomMenuItem key={link._id} sx={{ "*": { color: iconColor } }}>
                         <LinkTo url={link.url} sx={{ textDecoration: "none", width: "100%" }}>
-                            <ItemColumnCenter sx={{ gap: 0.2, svg: { fontSize: "1.2rem" } }}>
+                            <ItemColumnCenter direction={direction} sx={{ gap: 0.2, svg: { fontSize: "1.2rem" } }}>
                                 {link.icon}
                                 <Typography sx={{ fontSize: "0.7rem" }}>{link.name[lang]}</Typography>
                             </ItemColumnCenter>
@@ -53,7 +78,7 @@ const BottomMenuMobile = () => {
                 {bottomMenuRight.map((link) => (
                     <BottomMenuItem key={link._id} sx={{ "*": { color: iconColor } }}>
                         <LinkTo url={link.url} sx={{ textDecoration: "none", width: "100%" }}>
-                            <ItemColumnCenter sx={{ gap: 0.2, svg: { fontSize: "1.2rem" } }}>
+                            <ItemColumnCenter direction={direction} sx={{ gap: 0.2, svg: { fontSize: "1.2rem" } }}>
                                 {link.icon}
                                 <Typography sx={{ fontSize: "0.7rem" }}>{link.name[lang]}</Typography>
                             </ItemColumnCenter>
@@ -67,13 +92,10 @@ const BottomMenuMobile = () => {
 
 export default memo(BottomMenuMobile);
 
+// Styles
 const BottomMenuArea = styled(Box)(() => ({
     position: "fixed",
-    bottom: "25px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    width: "85%",
-    maxWidth: "500px",
+    alignItems: "center",
     borderRadius: "calc(infinity * 1px)",
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
     padding: "4px",
@@ -84,26 +106,30 @@ const BottomMenuContainer = styled(Box)(() => ({
     justifyContent: "space-evenly",
     alignItems: "center",
     width: "100%",
-    height: BOTTOMMENU_HEIGHT,
+    height: "100%",
 }));
 
-const BottomMenuItem = styled(Box)(() => ({
+const BottomMenuItem = styled(Box)(({ theme }) => ({
     flex: 0.9,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
     fontSize: "14px",
     padding: "4px 0px",
 }));
 
-const ItemColumnCenter = styled(Box)(() => ({
+const ItemColumnCenter = styled(Box, {
+    shouldForwardProp: (prop) => prop !== "direction",
+})<{ direction?: "row" | "column" }>(({ direction }) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
+    gap: direction === "column" ? "0.4rem" : "0.2rem",
 }));
 
 const BottomMenuItemFeature = styled(Box)(() => ({
-    height: "100%",
     aspectRatio: 1 / 1,
     display: "flex",
     alignItems: "center",

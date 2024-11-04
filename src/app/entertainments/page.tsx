@@ -1,23 +1,11 @@
 "use client";
 
-import {
-    BOTTOMMENU_HEIGHT,
-    Breadcrumb,
-    BreadcrumbTag,
-    Header,
-    ImageGetter_Tools,
-    Main,
-    Main_Container,
-    TopPage,
-    Waiting_Tools,
-    color,
-} from "@/components";
-import { ToolEn, ToolVi } from "@/locales";
+import { Box, Typography } from "@mui/joy";
+import { Breadcrumb, BreadcrumbTag, Header, Main, Main_Container, TopPage, color } from "@/components";
+import { EntertaimentEn, EntertaimentVi } from "@/locales";
 
-import { Divider } from "@mui/joy";
-import { FaToolbox } from "react-icons/fa";
+import { FaPenNib } from "react-icons/fa";
 import { Fragment } from "react";
-import { Grid } from "@mui/material";
 import React from "react";
 import { useGlobalContext } from "@/context/store";
 
@@ -30,19 +18,19 @@ const imageTopURL = {
 
 const breadcrumbTag: BreadcrumbTag = {
     current: {
-        text: "Dịch vụ",
+        text: "Giải trí",
         page: {
-            vi: "Dịch vụ",
-            en: "Services",
+            vi: "Giải trí",
+            en: "Entertaiments",
         },
-        url: "tools",
+        url: "entertaiments",
     },
     parents: [],
 };
 
 export default function Page() {
     const { lang } = useGlobalContext();
-    const T = lang === "en" ? ToolEn : ToolVi;
+    const T = lang === "en" ? EntertaimentEn : EntertaimentVi;
 
     return (
         <Fragment>
@@ -50,29 +38,25 @@ export default function Page() {
             <Main>
                 <Main_Container>
                     <TopPage
-                        bgcolor={color.black.sub}
                         image={imageTopURL}
+                        bgcolor={color.primary.light}
                         title={T.page.title}
                         description={T.page.description}
                         afterTitle={
                             <Fragment>
-                                <FaToolbox />
+                                ..
+                                <FaPenNib />
                             </Fragment>
                         }
                     />
                     {/* BREADCRUMB */}
                     <Breadcrumb current={breadcrumbTag.current} />
                     {/* BODY */}
-                    <Grid container spacing={{ xs: 1, md: 1 }} sx={{ flexGrow: 1 }}>
-                        {/* Image Geter */}
-                        <Grid item xs={6} sm={6} md={3} lg={2}>
-                            <ImageGetter_Tools lang={lang} />
-                        </Grid>
-                        <Grid item xs={6} sm={6} md={3} lg={2}>
-                            <Waiting_Tools lang={lang} />
-                        </Grid>
-                    </Grid>
-                    <Divider sx={{ py: 3, pb: `calc(${BOTTOMMENU_HEIGHT}px * 2)` }}>{T.page.showEnd}</Divider>
+                    <Box sx={{ textAlign: "center" }}>
+                        <Typography level="h2" sx={{ color: color.black.dark, fontSize: "1.4rem" }}>
+                            {lang === "vi" ? "Sẽ sớm thôi ^^!" : "Coming soon ^^!"}
+                        </Typography>
+                    </Box>
 
                     <BottomMenuMoblie />
                 </Main_Container>

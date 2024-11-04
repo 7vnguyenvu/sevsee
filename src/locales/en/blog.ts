@@ -4,13 +4,13 @@ const defaultExport = {
     },
     page: {
         title: {
-            xs: `Articles`,
-            md: `Articles & Diaries`,
+            xs: `Blogs`,
+            md: `Blogs`,
         },
         description: {
             xs: `[ SEE . ME ]
 Journey and Life!`,
-            md: `Welcome to [ SEE.ME Articles ]
+            md: `Welcome to [ SEE.ME Blogs ]
 Where SEE.ME share lessons from my personal journey.
 Sometimes it's the ups and downs of life!`,
         },

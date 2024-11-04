@@ -24,7 +24,7 @@ const userMenu = [
     { _id: "lu1", url: "/", name: { en: "Home", vi: "Trang chủ" }, icon: iconMap["HomeRounded"] },
     { _id: "lu2", url: "blogs", name: { en: "Blogs & Diaries", vi: "Bài viết & Nhật ký" }, icon: iconMap["RiQuillPenLine"] },
     { _id: "lu3", url: "tools", name: { en: "Tools & Services", vi: "Công cụ & Dịch vụ" }, icon: iconMap["PiToolboxLight"] },
-    { _id: "lu5", url: "entertaiments", name: { en: "Entertainment", vi: "Giải trí" }, icon: iconMap["PiGameControllerLight"] },
+    { _id: "lu5", url: "entertainments", name: { en: "Entertainment", vi: "Giải trí" }, icon: iconMap["PiGameControllerLight"] },
     { _id: "lu6", url: "projects", name: { en: "Projects & Sketches", vi: "Dự án & Phác thảo" }, icon: iconMap["PiBoundingBoxLight"] },
     { _id: "lu7", url: "check", name: { en: "SEE.Check", vi: "SEE.Check" }, icon: iconMap["VisibilityRounded"] },
 ];

@@ -15,8 +15,10 @@ export default function Comp() {
             <Header />
             <Main>
                 <Main_Container sx={{ height: `calc(100vh - ${MARGIN_HEADER}px - ${BOTTOMMENU_HEIGHT + 16 * 2}px)` }}>
-                    <h1>Coming soon!!!</h1>
-                    <p>We are building... </p>
+                    <Box sx={{ textAlign: "center" }}>
+                        <h1>Sorry!!!</h1>
+                        <p>Page not found </p>
+                    </Box>
                 </Main_Container>
             </Main>
         </Fragment>

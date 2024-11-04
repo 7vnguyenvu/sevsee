@@ -3,9 +3,11 @@
 import { CheckEn, CheckVi } from "@/locales";
 import { Header, Main, Main_Container } from "@/components";
 
+import React from "react";
 import { useGlobalContext } from "@/context/store";
 import { useSystemColorMode } from "@/hooks";
 
+const BottomMenuMoblie = React.lazy(() => import("@/components/header/bottom-menu-mobile"));
 // import { useEffect, useState } from "react";
 
 // import { useColorScheme } from "@mui/joy/styles";
@@ -56,6 +58,8 @@ export default function Home() {
                     <h2 style={{ fontSize: "1rem", fontWeight: "normal", color: "#777", margin: 0 }}>
                         {T.page.languageSelected}: {currLanguages[lang]}
                     </h2>
+
+                    <BottomMenuMoblie />
                 </Main_Container>
             </Main>
         </div>

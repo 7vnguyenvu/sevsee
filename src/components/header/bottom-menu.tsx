@@ -23,7 +23,7 @@ const bottomMenu: PageLink[] = [
         page: "blogs",
         pos: 1,
         text: {
-            en: "Articles",
+            en: "Blogs",
             vi: "Bài viết",
         },
     },
@@ -50,7 +50,7 @@ const bottomMenu: PageLink[] = [
     {
         child: [],
         hiden: false,
-        page: "entertaiments",
+        page: "entertainments",
         pos: 4,
         text: {
             en: "Entertainment",
