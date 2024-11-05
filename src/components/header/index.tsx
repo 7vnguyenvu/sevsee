@@ -88,7 +88,7 @@ export function Header() {
                             src={`${HOME_PAGE}/see.me-light.svg`}
                             width={100}
                             height={150}
-                            loading="lazy"
+                            loading="eager"
                         />
                     </Avatar>
                 </Box>
@@ -181,7 +181,7 @@ export function Header() {
                                 src={`${HOME_PAGE}/see.me-light.svg`}
                                 width={100}
                                 height={150}
-                                loading="lazy"
+                                loading="eager"
                             />
                         </Avatar>
                     </Box>

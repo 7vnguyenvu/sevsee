@@ -71,6 +71,7 @@ export default function Page() {
                             }}
                         >
                             <Image
+                                loading="eager"
                                 style={{ transition: "all 0.3s ease-in-out" }}
                                 src="/images/home-img.webp"
                                 title={T.title.xs}

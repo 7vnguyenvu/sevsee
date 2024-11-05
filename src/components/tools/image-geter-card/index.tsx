@@ -67,7 +67,7 @@ export function ImageGetter_Tools({ lang }: { lang: "en" | "vi" }) {
                     src={text[lang].image.src}
                     width={630}
                     height={470}
-                    loading="lazy"
+                    loading="eager"
                     alt={text[lang].image.alt}
                     draggable="false"
                 />
