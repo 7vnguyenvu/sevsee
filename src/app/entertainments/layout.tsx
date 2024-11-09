@@ -8,9 +8,9 @@ export async function generateMetadata(): Promise<Metadata> {
         title: T.head.title,
         description: T.head.description,
         alternates: {
-            canonical: process.env.HOME_CANONICAL + "entertaiments",
+            canonical: process.env.HOME_CANONICAL + "entertainments",
             languages: {
-                vi: process.env.HOME_CANONICAL + "entertaiments",
+                vi: process.env.HOME_CANONICAL + "entertainments",
             },
         },
     };
