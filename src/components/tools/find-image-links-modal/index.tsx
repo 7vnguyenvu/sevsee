@@ -39,7 +39,9 @@ export function FindImageLinksModal({ setImageURLs }: { setImageURLs: (urls: str
                     },
                 }}
             >
-                {T.buttonOpenModalText}
+                <Typography level="h2" sx={{ fontSize: 14, fontWeight: 600 }}>
+                    {T.buttonOpenModalText}
+                </Typography>
             </Button>
 
             <Modal
