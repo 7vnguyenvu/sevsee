@@ -158,7 +158,7 @@ const BottomMenuContainer = styled(Box)(() => {
             position: "absolute",
             left: "100%",
         },
-        "& > *:nth-child(-n+2)": {
+        "& > *:nth-of-type(-n+2)": {
             "&:hover": {
                 background: color.pink.light,
 
@@ -175,7 +175,7 @@ const BottomMenuContainer = styled(Box)(() => {
                 borderRight: `${BOTTOMMENU_PSEUDO_CLASS_WIDTH}px solid transparent`,
             },
         },
-        "& > *:nth-last-child(-n+2)": {
+        "& > *:nth-last-of-type(-n+2)": {
             "&:hover": {
                 background: color.pink.light,
 
@@ -189,7 +189,7 @@ const BottomMenuContainer = styled(Box)(() => {
                 borderLeft: `${BOTTOMMENU_PSEUDO_CLASS_WIDTH}px solid transparent`,
             },
         },
-        "& > :nth-child(3)": {
+        "& > :nth-of-type(3)": {
             background: color.primary.darkMedium,
             // color: color.primary.contrastText,
             "&::after, &::before": {
