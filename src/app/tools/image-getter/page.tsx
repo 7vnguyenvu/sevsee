@@ -23,6 +23,12 @@ import { Grid } from "@mui/material";
 import JSZip from "jszip";
 import { useGlobalContext } from "@/context/store";
 
+interface ValidImages {
+    row: number;
+    url: string;
+    info: { width: number; height: number; size: string };
+}
+
 interface URLErrorImage {
     url: string;
     index: number;
@@ -89,7 +95,7 @@ export default function Page() {
     const [folderName, setFolderName] = useState<string>("");
     const [alert, setAlert] = useState<string | null>(null);
     const [loadingValidImages, setLoadingValidImages] = useState<boolean>(false);
-    const [validImages, setValidImages] = useState<{ row: number; url: string }[]>([]);
+    const [validImages, setValidImages] = useState<ValidImages[]>([]);
     const [excludedImages, setExcludedImages] = useState<Set<string>>(new Set());
     const [progress, setProgress] = useState<number>(0); // State to track progress
     const [errorImages, setErrorImages] = useState<URLErrorImage[]>([]); // Danh sách URL lỗi
@@ -301,20 +307,20 @@ export default function Page() {
     //     setIsHandleDuplicateLoading(false);
     //     setProgressHandleImage(100);
     // };
-    const handleRemoveAllLowerQuality = async () => {
-        console.log(duplicates);
-    };
+    // const handleRemoveAllLowerQuality = async () => {
+    //     console.log(duplicates);
+    // };
 
-    // Hàm để load ảnh từ URL
-    const loadImage = (url: string): Promise<HTMLImageElement> => {
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.crossOrigin = "Anonymous"; // Đảm bảo có thể lấy dữ liệu pixel từ ảnh
-            img.onload = () => resolve(img);
-            img.onerror = reject;
-            img.src = url;
-        });
-    };
+    // // Hàm để load ảnh từ URL
+    // const loadImage = (url: string): Promise<HTMLImageElement> => {
+    //     return new Promise((resolve, reject) => {
+    //         const img = new Image();
+    //         img.crossOrigin = "Anonymous"; // Đảm bảo có thể lấy dữ liệu pixel từ ảnh
+    //         img.onload = () => resolve(img);
+    //         img.onerror = reject;
+    //         img.src = url;
+    //     });
+    // };
 
     // Kiểm tra tính hợp lệ của URL ảnh
     const checkImageValidity = (url: string, timeout = 5000): Promise<{ isValid: boolean; errorType?: string }> => {
@@ -344,7 +350,7 @@ export default function Page() {
             .map((url) => url.trim())
             .filter((url) => url !== "");
 
-        const validImageList: { row: number; url: string }[] = [];
+        const validImageList: ValidImages[] = [];
         const errImageList: URLErrorImage[] = [];
 
         for (let i = 0; i < urls.length; i++) {
@@ -352,7 +358,22 @@ export default function Page() {
             const { isValid, errorType } = await checkImageValidity(url, delayTimeout * 1000);
 
             if (isValid) {
-                validImageList.push({ row: i + 1, url: url });
+                const img = new Image();
+                img.src = url;
+                const response = await fetch(getProxyImageUrl(url));
+                const sizeInBytes = parseInt(response.headers.get("content-length") || "0");
+                let sizeDisplay = "";
+                if (sizeInBytes == 0) {
+                    sizeDisplay = `?? B`;
+                } else if (sizeInBytes < 1024) {
+                    sizeDisplay = `${sizeInBytes} B`;
+                } else if (sizeInBytes < 1024 * 1024) {
+                    sizeDisplay = `${Math.round(sizeInBytes / 1024)} KB`;
+                } else {
+                    sizeDisplay = `${(sizeInBytes / (1024 * 1024)).toFixed(1)} MB`;
+                }
+
+                validImageList.push({ row: i + 1, url: url, info: { width: img.width, height: img.height, size: sizeDisplay } });
             } else {
                 errImageList.push({ url, index: i + 1, errorType: errorType || "Lỗi tải ảnh" });
             }
@@ -407,11 +428,16 @@ export default function Page() {
 
     const getProxyImageUrl = (url: string) => {
         if (isBase64Image(url)) {
-            return url; // Trả về trực tiếp nếu là base64
+            return url;
         }
+        return `${process.env.NEXT_PUBLIC_PROXY_IMAGE}/?url=${encodeURIComponent(url)}`;
+    };
 
-        // Sử dụng một dịch vụ proxy ảnh, ví dụ: images.weserv.nl
-        return `https://images.weserv.nl/?url=${encodeURIComponent(url)}`;
+    const getAspectRatio = (item: ValidImages) => {
+        const { width, height } = item.info;
+        const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
+        const divisor = gcd(width, height);
+        return `${width / divisor}:${height / divisor}`;
     };
 
     useEffect(() => {
@@ -462,14 +488,17 @@ export default function Page() {
         const folder = zip.folder(folderName);
         const usedFileNames: Record<string, boolean> = {};
 
-        const getUniqueFileName = (baseFileName: string, dimensions: [number, number]): string => {
+        const getUniqueFileName = (baseFileName: string, dimensions: [number, number], order: number): string => {
             const [width, height] = dimensions;
-            const truncatedFileName = truncateFileName(baseFileName);
-            let uniqueName = `${truncatedFileName}_${width}x${height}`;
+
+            // const truncatedFileName = truncateFileName(baseFileName);
+            // let uniqueName = `${truncatedFileName}_${width}x${height}`;
+            let uniqueName = `${order}__${randomChars(3)}_${Date.now()}-${width}x${height}`;
             let counter = 1;
 
             while (usedFileNames[uniqueName]) {
-                uniqueName = `${truncatedFileName}_${width}x${height} (${counter})`;
+                // uniqueName = `${truncatedFileName}_${width}x${height} (${counter})`;
+                uniqueName = `${order}__${randomChars(3)}_${Date.now()}-${width}x${height}`;
                 counter++;
             }
 
@@ -479,7 +508,7 @@ export default function Page() {
 
         const downloadPromises = validImages
             .filter((img) => !excludedImages.has(img.url))
-            .map(async (item) => {
+            .map(async (item, index) => {
                 try {
                     let finalBlob;
                     let fileName = "";
@@ -513,7 +542,7 @@ export default function Page() {
 
                     const dimensions: [number, number] = [img.width, img.height];
                     const baseFileName = fileName.split(".").slice(0, -1).join(".");
-                    const uniqueFileName = getUniqueFileName(baseFileName, dimensions);
+                    const uniqueFileName = getUniqueFileName(baseFileName, dimensions, index + 1);
 
                     folder?.file(`${uniqueFileName}.${extension}`, finalBlob);
                     URL.revokeObjectURL(img.src);
@@ -543,6 +572,7 @@ export default function Page() {
     const downloadSingleImage = async (imageUrl: string) => {
         // Sử dụng proxy nếu có vấn đề CORS
         const proxyUrl = getProxyImageUrl(imageUrl);
+        const fileName = `${imageUrl.split("?")[0].split("/").pop()}`;
 
         try {
             const imageResponse = await fetch(proxyUrl);
@@ -552,35 +582,13 @@ export default function Page() {
 
             const imageBlob = await imageResponse.blob();
 
-            // Kiểm tra nếu ảnh là WebP
-            if (imageBlob.type === "image/webp") {
-                const img = new Image();
-                img.src = URL.createObjectURL(imageBlob);
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(imageBlob);
+            // link.download = fileName;
+            link.download = `${randomChars(3)}_${Date.now()}.${fileName.split(".")[1]}`;
+            link.click();
 
-                img.onload = function () {
-                    const canvas = document.createElement("canvas");
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext("2d");
-                    if (ctx) {
-                        ctx.drawImage(img, 0, 0);
-                        canvas.toBlob(function (blob) {
-                            if (blob) {
-                                const link = document.createElement("a");
-                                link.href = URL.createObjectURL(blob);
-                                link.download = `${imageUrl.replace(".webp", ".jpg").split("?")[0].split("/").pop()}`;
-                                link.click();
-                            }
-                        }, "image/jpeg");
-                    }
-                };
-            } else {
-                // Tải ảnh như nó vốn có nếu không phải là WebP
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(imageBlob);
-                link.download = `${imageUrl.split("?")[0].split("/").pop()}`;
-                link.click();
-            }
+            URL.revokeObjectURL(link.href);
         } catch (error) {
             console.error("Error downloading image:", error);
         }
@@ -709,6 +717,16 @@ export default function Page() {
                                     position: "sticky",
                                     top: MARGIN_HEADER,
                                     zIndex: 1,
+
+                                    "&::after": {
+                                        content: '""',
+                                        bgcolor: "inherit",
+                                        width: 2,
+                                        height: "100%",
+                                        position: "absolute",
+                                        top: "0",
+                                        left: "100%",
+                                    },
                                 }}
                             >
                                 {/* Phần hiển thị thống kê ngay dưới textarea */}
@@ -1013,7 +1031,7 @@ export default function Page() {
                             {/* Preview ảnh hợp lệ */}
                             {validImages.length > 0 && (
                                 <Grid item xs={12}>
-                                    <Grid container spacing={{ xs: 1, md: 1 }} sx={{ flexGrow: 1, overflow: "hidden" }}>
+                                    <Grid container spacing={{ xs: 1, md: 1 }} sx={{ flexGrow: 1, boxSizing: "border-box" }}>
                                         {validImages.map((item, index) => {
                                             // Check if the image is excluded
                                             if (excludedImages.has(item.url)) {
@@ -1022,6 +1040,20 @@ export default function Page() {
 
                                             const proxyUrl = getProxyImageUrl(item.url);
                                             const serialNum = index + 1;
+
+                                            const styleButtonTopRight = {
+                                                color: "white",
+                                                fontSize: "1rem",
+                                                padding: "2px",
+                                                borderRadius: "4px",
+                                                backgroundColor: color.black.dark + "80",
+                                                transition: "all ease-in-out .2s",
+
+                                                ":hover": {
+                                                    cursor: "pointer",
+                                                    backgroundColor: color.black.dark + "cc",
+                                                },
+                                            };
 
                                             return (
                                                 <Grid item xs={6} sm={3} md={2} key={index}>
@@ -1056,38 +1088,20 @@ export default function Page() {
                                                                 <Tooltip title={T.page.urlPos} arrow size="sm" placement="bottom-end">
                                                                     <HighlightAlt
                                                                         onClick={() => handleHighlightErrorUrl(item.url, item.row)}
+                                                                        sx={styleButtonTopRight}
+                                                                    />
+                                                                </Tooltip>
+                                                                <Tooltip title={T.page.urlRemoveShow} arrow size="sm" placement="bottom-end">
+                                                                    <Delete
+                                                                        onClick={() => {
+                                                                            setExcludedImages((prev) => new Set(prev).add(item.url));
+                                                                        }}
                                                                         sx={{
-                                                                            color: "white",
-                                                                            fontSize: "1rem",
-                                                                            padding: "2px",
-                                                                            borderRadius: "4px",
-                                                                            backgroundColor: "rgba(0, 0, 0, 0.2)",
-                                                                            transition: "all ease-in-out .2s",
-
-                                                                            ":hover": {
-                                                                                cursor: "pointer",
-                                                                                backgroundColor: "rgba(0, 0, 0, 0.6)",
-                                                                            },
+                                                                            ...styleButtonTopRight,
+                                                                            color: color.primary.main,
                                                                         }}
                                                                     />
                                                                 </Tooltip>
-                                                                {/* <Tooltip title={"Xem chi tiết"} arrow size="sm" placement="bottom-end">
-                                                                    <InfoOutlined
-                                                                        sx={{
-                                                                            color: "white",
-                                                                            fontSize: "1rem",
-                                                                            padding: "2px",
-                                                                            borderRadius: "4px",
-                                                                            backgroundColor: "rgba(0, 0, 0, 0.2)",
-                                                                            transition: "all ease-in-out .2s",
-
-                                                                            ":hover": {
-                                                                                cursor: "pointer",
-                                                                                backgroundColor: "rgba(0, 0, 0, 0.6)",
-                                                                            },
-                                                                        }}
-                                                                    />
-                                                                </Tooltip> */}
                                                             </Stack>
                                                         </Stack>
 
@@ -1104,29 +1118,28 @@ export default function Page() {
                                                                 objectFit: "cover",
                                                                 border: "1px solid #ddd",
                                                                 borderRadius: "4px",
+                                                                userSelect: "none",
                                                             }}
                                                         />
-
-                                                        {/* Nút xóa */}
-                                                        <Button
-                                                            variant="solid"
-                                                            color="danger"
-                                                            size="sm"
+                                                        {/* Thông tin ảnh */}
+                                                        <Typography
+                                                            level="body-sm"
                                                             sx={{
+                                                                backgroundColor: color.black.dark + "aa",
+                                                                color: color.white.main,
                                                                 position: "absolute",
                                                                 bottom: 0,
                                                                 left: 0,
                                                                 margin: "5px",
-                                                                fontSize: "0.7rem",
-                                                            }}
-                                                            onClick={() => {
-                                                                setExcludedImages((prev) => new Set(prev).add(item.url));
+                                                                fontSize: "0.65rem",
+                                                                px: 0.5,
+                                                                borderRadius: "4px",
                                                             }}
                                                         >
-                                                            <Delete />
-                                                        </Button>
+                                                            {getAspectRatio(item)} | {item.info.width} x {item.info.height} | {item.info.size}
+                                                        </Typography>
 
-                                                        {/* Nút tải ngay */}
+                                                        {/* Nút tải đơn */}
                                                         <Button
                                                             variant="solid"
                                                             color="primary"
@@ -1136,7 +1149,11 @@ export default function Page() {
                                                                 bottom: 0,
                                                                 right: 0,
                                                                 margin: "5px",
-                                                                fontSize: "0.7rem",
+                                                                px: 1,
+
+                                                                svg: {
+                                                                    fontSize: "1rem",
+                                                                },
                                                             }}
                                                             onClick={() => downloadSingleImage(item.url)}
                                                         >
@@ -1158,40 +1175,29 @@ export default function Page() {
     );
 }
 
-// Helper function to compare image resolutions or sizes
-const getImageResolution = async (imageUrl: string) => {
-    return new Promise<{ width: number; height: number }>((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve({ width: img.width, height: img.height });
-        img.onerror = reject;
-        img.src = imageUrl;
-    });
-};
+// // Helper function to compare image resolutions or sizes
+// const getImageResolution = async (imageUrl: string) => {
+//     return new Promise<{ width: number; height: number }>((resolve, reject) => {
+//         const img = new Image();
+//         img.onload = () => resolve({ width: img.width, height: img.height });
+//         img.onerror = reject;
+//         img.src = imageUrl;
+//     });
+// };
 
 // Hàm rút ngắn tên file
 const truncateFileName = (fileName: string): string => {
-    const maxLength = 20;
+    const maxLength = 50;
     return fileName.length > maxLength ? fileName.substring(0, maxLength) : fileName;
 };
 
-// Hàm chuyển đổi webp sang jpg
-const convertWebpToJpg = (blob: Blob): Promise<Blob> => {
-    return new Promise((resolve) => {
-        const img = new Image();
-        img.src = URL.createObjectURL(blob);
+// Hàm tạo chuỗi ký tự ngẫu nhiên theo số lượng ký tự
+function randomChars(amount: number) {
+    let text = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    for (let i = 0; i < amount - 1; i++) {
+        const nextChar = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+        text += nextChar;
+    }
 
-        img.onload = () => {
-            const canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const ctx = canvas.getContext("2d");
-            if (ctx) {
-                ctx.drawImage(img, 0, 0);
-                canvas.toBlob((newBlob) => {
-                    if (newBlob) resolve(newBlob);
-                }, "image/jpeg");
-            }
-            URL.revokeObjectURL(img.src); // Giải phóng bộ nhớ
-        };
-    });
-};
+    return text;
+}

@@ -55,6 +55,7 @@ Share features and services to support you in your work and study most effective
             showStart: "Results are showing",
             showEnd: "All results shown!",
             urlPos: "View URL location",
+            urlRemoveShow: "Remove from results list",
         },
         modal: {
             FindImageLinksModal: {

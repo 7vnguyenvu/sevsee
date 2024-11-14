@@ -56,6 +56,7 @@ Chia sẻ các tính năng và dịch vụ hỗ trợ bạn trong công việc v
             showStart: "Kết quả ảnh đang hiển thị",
             showEnd: "Tất cả kết quả đã được hiển thị!",
             urlPos: "Xem vị trí URL",
+            urlRemoveShow: "Xóa khỏi hiển thị",
         },
         modal: {
             FindImageLinksModal: {
