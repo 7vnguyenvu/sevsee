@@ -55,12 +55,13 @@ export function TopPage({ bgcolor, image, title, description, afterTitle }: Prop
                 <Box
                     sx={{
                         position: "absolute",
-                        top: { xs: "-70%", sm: "-60%", md: "-60%" },
-                        right: { xs: "-20%", sm: "8%", md: "4%" },
-                        bottom: { xs: "-10%", sm: "-40%", md: "-40%" },
+                        top: { xs: "-50%", sm: "-60%", md: "-60%" },
+                        right: { xs: "-12%", sm: "8%", md: "4%" },
+                        bottom: { xs: "-12%", sm: "-40%", md: "-40%" },
                         img: {
                             height: "100%",
                             objectFit: "cover",
+                            opacity: 0.2,
                         },
                     }}
                 >
