@@ -1,3 +1,5 @@
+import "./global.css";
+
 import { Box } from "@mui/joy";
 import { CssVarsProvider } from "@mui/joy/styles";
 import { GlobalContextProvider } from "@/context/store";
