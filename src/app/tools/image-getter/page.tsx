@@ -325,6 +325,12 @@ export default function Page() {
     // Kiểm tra tính hợp lệ của URL ảnh
     const checkImageValidity = (url: string, timeout = 5000): Promise<{ isValid: boolean; errorType?: string }> => {
         return new Promise((resolve) => {
+            // Kiểm tra blob URL
+            if (url.startsWith("blob:")) {
+                resolve({ isValid: false, errorType: "Invalid Blob URL" });
+                return;
+            }
+
             const img = new Image();
             const timer = setTimeout(() => {
                 img.src = "";
