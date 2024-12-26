@@ -10,9 +10,9 @@ const defaultExport = {
             md: `Services`,
         },
         description: {
-            xs: `[ SEE . ME ]
+            xs: `[ SEE.ME ]
 Support you most effectively!`,
-            md: `[ SEE . ME ] Tools
+            md: `[ SEE.ME ] Tools
 Share features and services to support you in your work and study most effectively.`,
         },
         showEnd: "More to come! Stay tuned!",

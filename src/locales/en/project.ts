@@ -9,7 +9,7 @@ const defaultExport = {
             md: "Projects",
         },
         description: {
-            xs: `[ SEE . ME ]
+            xs: `[ SEE.ME ]
 Ideas - Development - Breakthrough!`,
             md: `Welcome to [ SEE.ME Projects ]
 Where SEE.ME shares personal ideas.

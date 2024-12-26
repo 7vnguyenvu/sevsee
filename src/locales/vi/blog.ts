@@ -10,7 +10,7 @@ const defaultExport = {
             md: "Bài viết",
         },
         description: {
-            xs: `[ SEE . ME ]
+            xs: `[ SEE.ME ]
 Hành trình và Cuộc sống!`,
             md: `Chào mừng bạn đến với [ Bài viết của SEE.ME ]
 Nơi SEE.ME chia sẻ về những bài học từ hành trình cá nhân.

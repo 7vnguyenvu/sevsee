@@ -9,8 +9,8 @@ const font = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: {
-        default: "[ SEE . ME ] - 7V - NGUYEN VU SERVICES",
-        template: "%s -- [ SEE . ME ]",
+        default: "[ SEE.ME ] - 7V - NGUYEN VU SERVICES",
+        template: "%s -- [ SEE.ME ]",
     },
     description: `SEE.ME - Điểm hẹn của cảm hứng và trải nghiệm, khám phá góc nhìn mới, kết nối với những tâm hồn đồng điệu trên hành trình khám phá bản thân.`,
     alternates: {

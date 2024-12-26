@@ -8,7 +8,7 @@ const defaultExport = {
             md: `Blogs`,
         },
         description: {
-            xs: `[ SEE . ME ]
+            xs: `[ SEE.ME ]
 Journey and Life!`,
             md: `Welcome to [ SEE.ME Blogs ]
 Where SEE.ME share lessons from my personal journey.

@@ -10,9 +10,9 @@ const defaultExport = {
             md: `Dịch vụ`,
         },
         description: {
-            xs: `[ SEE . ME ] Tools
+            xs: `[ SEE.ME ] Tools
 Hỗ trợ bạn hiệu quả nhất!`,
-            md: `Công cụ của [ SEE . ME ]
+            md: `Công cụ của [ SEE.ME ]
 Chia sẻ các tính năng và dịch vụ hỗ trợ bạn trong công việc và học tập hiệu quả nhất.`,
         },
         showEnd: "Sẽ còn nhiều nữa! Hãy theo dõi nhé!",
@@ -20,7 +20,7 @@ Chia sẻ các tính năng và dịch vụ hỗ trợ bạn trong công việc v
     imageGetter: {
         name: "Trình thu thập Ảnh",
         head: {
-            title: "Lấy ảnh qua URLs",
+            title: "Tải ảnh từ danh sách URL của bạn",
             description:
                 "Công cụ hỗ trợ lấy ảnh nhanh từ URL - giúp bạn trích xuất ảnh theo danh sách một cách nhanh chóng và hiệu quả, tiết kiệm thời gian và công sức tối đa.",
         },

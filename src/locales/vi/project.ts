@@ -10,7 +10,7 @@ const defaultExport = {
             md: "Dự án",
         },
         description: {
-            xs: `[ SEE . ME ]
+            xs: `[ SEE.ME ]
 Ý tưởng - Phát triển - Bức phá!`,
             md: `Chào mừng bạn đến với [ Dự án của SEE.ME ]
 Nơi SEE.ME chia sẻ về những ý tưởng cá nhân.

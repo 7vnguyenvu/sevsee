@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
         title: {
             default: T.head.title,
-            template: "%s -- [ SEE . ME ]",
+            template: "%s -- [ SEE.ME ]",
         },
         description: T.head.description,
         alternates: {

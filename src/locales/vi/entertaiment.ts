@@ -9,7 +9,7 @@ const defaultExport = {
             md: "Giải trí",
         },
         description: {
-            xs: `[ SEE . ME ]
+            xs: `[ SEE.ME ]
 Cùng thư giản - Cùng xã stress!`,
             md: `Chào mừng bạn đến [ Giải trí cùng SEE.ME ]
 Nơi SEE.ME cung cấp các trò chơi, những câu chuyện phím giúp bạn thư giản..

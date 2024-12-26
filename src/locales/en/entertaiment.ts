@@ -9,7 +9,7 @@ const defaultExport = {
             md: "Entertainments",
         },
         description: {
-            xs: `[ SEE . ME ]
+            xs: `[ SEE.ME ]
 Relax together - Relieve stress!`,
             md: `Welcome to [Entertainment with SEE.ME ]
 Where SEE.ME provides games, stories to help you relax..
