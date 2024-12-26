@@ -1,13 +1,11 @@
-import "./global.css";
-
 import { Box } from "@mui/joy";
 import { CssVarsProvider } from "@mui/joy/styles";
 import { GlobalContextProvider } from "@/context/store";
+import { Inter } from "next/font/google";
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
-const font = Montserrat({ subsets: ["latin"] });
+const font = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: {
