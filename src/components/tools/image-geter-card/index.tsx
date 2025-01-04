@@ -5,6 +5,8 @@ import Image from "next/image";
 import LinkTo from "@/components/link";
 import { color } from "@/components";
 
+const toolUrl = "tools/image-getter";
+
 const text = {
     vi: {
         title: "Image Getter Online",
@@ -44,7 +46,9 @@ export function ImageGetter_Tools({ lang }: { lang: "en" | "vi" }) {
         >
             <div>
                 <Typography level="h2" sx={{ fontSize: { xs: "0.9rem", md: "1.2rem" } }}>
-                    {text[lang].title}
+                    <LinkTo url={toolUrl} sx={{ color: color.white.main }}>
+                        {text[lang].title}
+                    </LinkTo>
                 </Typography>
                 <Typography level="body-sm" sx={{ fontSize: { xs: "0.65rem", md: "1rem" } }}>
                     {text[lang].sub}
@@ -61,17 +65,19 @@ export function ImageGetter_Tools({ lang }: { lang: "en" | "vi" }) {
                     />
                 </Tooltip>
             </div>
-            <AspectRatio minHeight="100px" maxHeight="200px">
-                <Image
-                    title={text[lang].title}
-                    src={text[lang].image.src}
-                    width={630}
-                    height={470}
-                    loading="eager"
-                    alt={text[lang].image.alt}
-                    draggable="false"
-                />
-            </AspectRatio>
+            <LinkTo url={toolUrl}>
+                <AspectRatio minHeight="100px" maxHeight="200px">
+                    <Image
+                        title={text[lang].title}
+                        src={text[lang].image.src}
+                        width={630}
+                        height={470}
+                        loading="eager"
+                        alt={text[lang].image.alt}
+                        draggable="false"
+                    />
+                </AspectRatio>
+            </LinkTo>
             <CardContent>
                 <Box
                     sx={{
@@ -91,7 +97,7 @@ export function ImageGetter_Tools({ lang }: { lang: "en" | "vi" }) {
                             <Typography sx={{ fontSize: { xs: "xs", md: "sm" }, fontWeight: "lg" }}>7M+ {text[lang].usedLable}</Typography>
                         </Stack>
                     </div>
-                    <LinkTo url="tools/image-getter" sx={{ fontWeight: 600 }}>
+                    <LinkTo url={toolUrl}>
                         <Button
                             variant="solid"
                             size="sm"
@@ -100,6 +106,12 @@ export function ImageGetter_Tools({ lang }: { lang: "en" | "vi" }) {
                                 bgcolor: color.pink_Of_Nhi.main,
                                 color: color.black.dark,
                                 px: 0.75,
+                                fontWeight: 700,
+
+                                "&:hover": {
+                                    bgcolor: color.primary.main,
+                                    color: color.white.main,
+                                },
                             }}
                         >
                             {text[lang].button}
