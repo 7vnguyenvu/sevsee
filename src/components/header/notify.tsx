@@ -19,13 +19,13 @@ const notifies = [
         activator: "[SEE.ME]",
         content: "Hệ thống thông báo bảo trì tính năng viết blog và tăng trải nghiệm tốt hơn cho bạn.",
         createdAt: new Date("2024-07-19T03:10:25.723+00:00"),
-        seen: false,
+        seen: true,
     },
     {
         activator: "Nàng",
         content: "Lát qua chở tui đi mua đồ nhea.",
         createdAt: new Date("2024-07-19T02:10:25.723+00:00"),
-        seen: false,
+        seen: true,
     },
     {
         activator: "[SEE.ME]",
