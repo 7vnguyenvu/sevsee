@@ -1,4 +1,4 @@
-const folderNameDefault = "sevsee-images.zip";
+const folderNameDefault = "sevsee-images";
 
 const defaultExport = {
     head: {
@@ -37,7 +37,7 @@ Chia sẻ các tính năng và dịch vụ hỗ trợ bạn trong công việc v
             textAreaPlaceholder: "Nhập danh sách URL ảnh, mỗi dòng là một URL",
             folderNameLabel: "Đặt tên cho file chứa",
             folderNameDefault,
-            folderNameDefaultLabel: `Mặc định: ${folderNameDefault}`,
+            folderNameDefaultLabel: `Mặc định: ${folderNameDefault}.zip`,
             folderNamePlaceholder: "Ví dụ: Danh sách ảnh",
             progressLabel: "Đang tìm ảnh…",
             handleDownloadImages: {

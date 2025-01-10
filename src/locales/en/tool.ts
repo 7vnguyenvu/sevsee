@@ -1,4 +1,4 @@
-const folderNameDefault = "sevsee-images.zip";
+const folderNameDefault = "sevsee-images";
 
 const defaultExport = {
     head: {
@@ -36,7 +36,7 @@ Share features and services to support you in your work and study most effective
             textAreaPlaceholder: "Enter a list of image URLs, one per line",
             folderNameLabel: "Name the container",
             folderNameDefault,
-            folderNameDefaultLabel: `Default: ${folderNameDefault}`,
+            folderNameDefaultLabel: `Default: ${folderNameDefault}.zip`,
             folderNamePlaceholder: "Example: List of images",
             progressLabel: "Searching for images…",
             handleDownloadImages: {
