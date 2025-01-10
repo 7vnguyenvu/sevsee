@@ -483,15 +483,16 @@ export default function Page() {
             return;
         }
 
-        if (folderName.trim() === "") {
-            setAlert(T.page.handleDownloadImages.missingFolderName);
-            setIsDownAllLoading(false);
-            return;
-        }
+        const folderNameDownload = folderName.trim() || T.page.folderNameDefault;
+        // if (folderName.trim() === "") {
+        //     setAlert(T.page.handleDownloadImages.missingFolderName);
+        //     setIsDownAllLoading(false);
+        //     return;
+        // }
 
         setAlert(null);
         const zip = new JSZip();
-        const folder = zip.folder(folderName);
+        const folder = zip.folder(folderNameDownload);
         const usedFileNames: Record<string, boolean> = {};
 
         const getUniqueFileName = (baseFileName: string, dimensions: [number, number], order: number): string => {
@@ -563,7 +564,7 @@ export default function Page() {
             const content = await zip.generateAsync({ type: "blob" });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(content);
-            link.download = `${folderName}.zip`;
+            link.download = `${folderNameDownload}.zip`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -714,27 +715,7 @@ export default function Page() {
                                 {loadingValidImages && <LinearProgressWithLabel text={T.page.progressLabel} progress={progress} />}
                             </Grid>
 
-                            <Grid
-                                item
-                                xs={12}
-                                md={12}
-                                sx={{
-                                    bgcolor: color.body[systemMode],
-                                    position: "sticky",
-                                    top: MARGIN_HEADER,
-                                    zIndex: 1,
-
-                                    "&::after": {
-                                        content: '""',
-                                        bgcolor: "inherit",
-                                        width: 2,
-                                        height: "100%",
-                                        position: "absolute",
-                                        top: "0",
-                                        left: "100%",
-                                    },
-                                }}
-                            >
+                            <Grid item xs={12} md={12}>
                                 {/* Phần hiển thị thống kê ngay dưới textarea */}
                                 <Grid item xs={12} md={12}>
                                     <Stack direction={"row"} gap={2} sx={{ alignItems: "center" }}>
@@ -964,7 +945,28 @@ export default function Page() {
                                         )} */}
                                     </Stack>
                                 </Grid>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                md={12}
+                                sx={{
+                                    bgcolor: color.body[systemMode],
+                                    position: "sticky",
+                                    top: MARGIN_HEADER,
+                                    zIndex: 1,
 
+                                    "&::after": {
+                                        content: '""',
+                                        bgcolor: "inherit",
+                                        width: 2,
+                                        height: "100%",
+                                        position: "absolute",
+                                        top: "0",
+                                        left: "100%",
+                                    },
+                                }}
+                            >
                                 <Grid item xs={12} md={12}>
                                     <Grid container spacing={{ xs: 1, md: 2 }} sx={{ flexGrow: 1, alignItems: "end" }}>
                                         <Grid item xs={12} md={8}>
@@ -973,11 +975,13 @@ export default function Page() {
                                                     style={{
                                                         display: "block",
                                                         margin: "10px 0",
-                                                        fontWeight: "bold" as const,
                                                         color: "#333",
                                                     }}
                                                 >
-                                                    {T.page.folderNameLabel}
+                                                    <b>{T.page.folderNameLabel}</b>{" "}
+                                                    <span style={{ fontSize: "80%" }}>
+                                                        <i>({T.page.folderNameDefaultLabel})</i>
+                                                    </span>
                                                 </label>
                                                 <input
                                                     type="text"
@@ -1062,7 +1066,7 @@ export default function Page() {
                                             };
 
                                             return (
-                                                <Grid item xs={6} sm={3} md={2} key={index}>
+                                                <Grid item xs={6} sm={3} md={3} key={index}>
                                                     <Box sx={{ position: "relative", width: "100%", height: "100%" }}>
                                                         {/* Hiển thị số thứ tự */}
                                                         <Stack

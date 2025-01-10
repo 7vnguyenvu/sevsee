@@ -1,3 +1,5 @@
+const folderNameDefault = "sevsee-images.zip";
+
 const defaultExport = {
     head: {
         title: "Tools & Services",
@@ -33,6 +35,8 @@ Share features and services to support you in your work and study most effective
             labelDelay: "Time out",
             textAreaPlaceholder: "Enter a list of image URLs, one per line",
             folderNameLabel: "Name the container",
+            folderNameDefault,
+            folderNameDefaultLabel: `Default: ${folderNameDefault}`,
             folderNamePlaceholder: "Example: List of images",
             progressLabel: "Searching for images…",
             handleDownloadImages: {

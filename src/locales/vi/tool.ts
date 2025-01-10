@@ -1,3 +1,5 @@
+const folderNameDefault = "sevsee-images.zip";
+
 const defaultExport = {
     head: {
         title: "Công cụ & Dịch vụ",
@@ -34,6 +36,8 @@ Chia sẻ các tính năng và dịch vụ hỗ trợ bạn trong công việc v
             labelDelay: "Thời gian chờ",
             textAreaPlaceholder: "Nhập danh sách URL ảnh, mỗi dòng là một URL",
             folderNameLabel: "Đặt tên cho file chứa",
+            folderNameDefault,
+            folderNameDefaultLabel: `Mặc định: ${folderNameDefault}`,
             folderNamePlaceholder: "Ví dụ: Danh sách ảnh",
             progressLabel: "Đang tìm ảnh…",
             handleDownloadImages: {
